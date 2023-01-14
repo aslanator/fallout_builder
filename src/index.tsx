@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import style from './index.module.css';
 import { Error404 } from './pages/Error404/Error404';
 import { Start } from './pages/Start/Start';
@@ -14,7 +14,7 @@ const store = createAppStore();
 
 const createRouter = () => {
 
-  return createBrowserRouter([
+  return createHashRouter([
     {
       path: "/",
       element: <Start />,
