@@ -1,0 +1,65 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.line {
+    display: flex;
+    gap: 10px;
+    height: 720px;
+}
+
+.linePrice{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.card {
+    position: relative;
+    max-width: 500px;
+    flex-shrink: 0;
+}
+
+.card img {
+    max-width: 100%;
+}
+
+.characterCard {
+    position: relative;
+    width: 500px;
+    height: 700px;
+    background-size: cover;
+    flex-shrink: 0;
+}
+
+.price {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.46);
+    border-radius: 50%;
+    padding: 3px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: initial;
+    text-orientation:initial;
+}
+
+.total {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    display: flex;
+}

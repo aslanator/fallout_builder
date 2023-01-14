@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.cardsContainer {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.cards {
+    display: flex;
+    gap: 10px;
+    background: rgb(232, 232, 232);
+    padding: 5px;
+    border-radius: 5px;
+    width: max-content;
+}
+
+.add {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons {
+    display: flex;
+    gap: 5px;
+}

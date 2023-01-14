@@ -1,0 +1,31 @@
+.image {
+    max-width: 255px;
+    flex-grow: 0;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.image img {
+    max-width: 100%;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0 0 5px 0;
+    background: rgb(65 116 161);
+    color: white;
+    overflow: hidden;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    align-items: center;
+    padding: 5px;
+}
+
+.title {
+    font-size: 15px;
+    font-weight: 700;
+}
