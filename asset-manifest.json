@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/fallout_builder/static/css/main.34442541.css",
-    "main.js": "/fallout_builder/static/js/main.d0d54ab1.js",
+    "main.js": "/fallout_builder/static/js/main.66ef6b13.js",
     "index.html": "/fallout_builder/index.html",
     "main.34442541.css.map": "/fallout_builder/static/css/main.34442541.css.map",
-    "main.d0d54ab1.js.map": "/fallout_builder/static/js/main.d0d54ab1.js.map"
+    "main.66ef6b13.js.map": "/fallout_builder/static/js/main.66ef6b13.js.map"
   },
   "entrypoints": [
     "static/css/main.34442541.css",
-    "static/js/main.d0d54ab1.js"
+    "static/js/main.66ef6b13.js"
   ]
 }
