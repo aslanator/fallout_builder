@@ -25,6 +25,20 @@ export const getCharacters = async (): Promise<CharacterCard[]> => {
         console.log({result})
         resolve(result.map(item => {
             return {...item, price: Number(item.price), defaultEquipment: item.defaultEquipment?.split(', ') ?? [], availableItems: item.availableItems?.split(', ') as ItemSubType[] ?? [], cards: []};
+        }).sort((a, b) => {
+            if (a.faction < b.faction) {
+                return -1;
+            }
+            if (a.faction > b.faction) {
+                return 1;
+            }
+            if (a.title < b.title) {
+                return -1;
+            }
+            if (a.title > b.title) {
+                return 1;
+            }
+            return 0;
         }));
     }, reject));
 }

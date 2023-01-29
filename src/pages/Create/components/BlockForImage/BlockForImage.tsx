@@ -13,7 +13,7 @@ export const BlockForImage: React.FC<Props> = ({characters, sum}) => {
             return (
                 <div className={style.line}>
                     <div className={style.linePrice}>{price}</div>
-                    <div className={style.characterCard} style={{backgroundImage: `url(${character.image})`}}>
+                    <div className={style.characterCard} style={{backgroundImage: `url("${character.image}")`}}>
                         <div className={style.price}>{character.price}</div>
                     </div>
                     <div className={style.cards}>

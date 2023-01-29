@@ -35,6 +35,9 @@ export const FactionFilter = observer<Props>(({store}) => {
                 defaultValue={store.characterFilter.factions}
                 onChange={onFactionChange}
                 options={options}
+                filterOption={(inputValue, option) =>
+                    !!option?.label.toLowerCase().includes(inputValue.toLowerCase())
+                }
                 />
         </div>
     </div>

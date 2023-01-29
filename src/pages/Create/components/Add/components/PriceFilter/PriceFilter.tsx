@@ -1,6 +1,6 @@
 import { Input } from 'antd';
 import { observer } from 'mobx-react-lite';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { CardsStore } from '../../../../store';
 import style from './PriceFilter.module.css';
 

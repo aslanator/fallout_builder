@@ -29,7 +29,7 @@ export const Create = observer<Props>(({appStore}) => {
         return characters;
     }, [appStore.json])
 
-    const store = useMemo(() => createCardsStore({cards, characterCards, characters}), [cards, characterCards]);
+    const store = useMemo(() => createCardsStore({cards, characterCards, characters}), [cards, characterCards, characters]);
 
     const charactersList = Object.values(store.characters);
 

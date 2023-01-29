@@ -1,7 +1,7 @@
 import { Select } from "antd";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
-import { ItemSubType, itemSubTypes, ItemType, itemTypes } from "../../../../../../globalTypes";
+import { ItemSubType, itemSubTypes } from "../../../../../../globalTypes";
 import { CardsStore } from "../../../../store";
 
 import style from './ItemSubTypeFilter.module.css';

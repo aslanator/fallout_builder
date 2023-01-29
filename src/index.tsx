@@ -33,7 +33,7 @@ const createRouter = () => {
           characterCards
         };
       },
-      element: <Create appStore={store} />,
+      element: <Create appStore={store} />
     },
   ]);
 }
