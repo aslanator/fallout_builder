@@ -7,12 +7,13 @@ type Props = {
   src: string;
   alt?: string;
   title: string;
-}
+};
+
 
 export const Img: React.FC<Props> = ({src, alt, title}) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const [loading, setLoading] = useState(false);
-
+  
   useEffect(() => {
     let observer: IntersectionObserver | undefined;
     if(imageRef.current) {
@@ -22,12 +23,14 @@ export const Img: React.FC<Props> = ({src, alt, title}) => {
         rootMargin: "100px"
       };
     
-      observer = new IntersectionObserver((entries) => {
+      observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
         for(const entry of entries) {
+          const target = (entry.target as HTMLImageElement);
+          const dataSrc = String(target.dataset.src);
           if(entry.isIntersecting) {
-            const target =  (entry.target as HTMLImageElement);
-            target.src = String(target.dataset.src);
+            target.src = dataSrc;
             setLoading(true);
+            observer?.disconnect();
           }
         }
       }, options);
