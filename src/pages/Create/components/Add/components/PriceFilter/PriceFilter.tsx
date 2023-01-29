@@ -9,19 +9,19 @@ type Props = {
 }
 
 export const PriceFilter = observer<Props>(({store}) => {
-    const [minPrice, setMinPrice] = useState(store.filter.priceMin.toString());
-    const [maxPrice, setMaxPrice] = useState(store.filter.priceMax.toString());
+    const [minPrice, setMinPrice] = useState(store.characterFilter.priceMin.toString());
+    const [maxPrice, setMaxPrice] = useState(store.characterFilter.priceMax.toString());
 
     const onMaxPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
         setMaxPrice(event.target.value);
         const value = Number(event.target.value);
-        store.changeFilter({...store.filter, priceMax: value});
+        store.changeCharacterFilter({...store.characterFilter, priceMax: value});
     };
 
     const onMinPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
         setMinPrice(event.target.value);
         const value = Number(event.target.value);
-        store.changeFilter({...store.filter, priceMin: value});
+        store.changeCharacterFilter({...store.characterFilter, priceMin: value});
     };
 
     return <div className={style.container}>

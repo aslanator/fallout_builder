@@ -1,0 +1,49 @@
+import { Select } from "antd";
+import { observer } from "mobx-react-lite";
+import { useEffect, useMemo } from "react";
+import { ItemSubType, itemSubTypes, ItemType, itemTypes } from "../../../../../../globalTypes";
+import { CardsStore } from "../../../../store";
+
+import style from './ItemSubTypeFilter.module.css';
+
+type Props = {
+    store: CardsStore;
+}
+
+type Option = {
+    label: string;
+    value: ItemSubType;
+}
+
+export const ItemSubTypeFilter = observer<Props>(({store}) => {
+
+    const onSubTypeChange = (value: ItemSubType[]) => {
+        store.changeItemFilter({...store.itemFilter, subTypes: value});
+    }
+
+    const characterId = store.addForCharacter;
+    const defaultItems = useMemo(() =>  store.characters[characterId]?.availableItems ?? [], [characterId, store.characters])
+
+    useEffect(() => {
+        store.changeItemFilter({...store.itemFilter, subTypes: defaultItems});
+    }, [defaultItems, store]);
+
+    const options: Option[] = itemSubTypes.map((itemType) => ({value: itemType, label: itemType}));
+
+    return <div className={style.container}>
+        <div className={style.field}>
+            <div>Item types</div>
+            <Select
+                className={style.select}
+                mode="multiple"
+                allowClear
+                placeholder="Please select"
+                defaultValue={defaultItems}
+                onChange={onSubTypeChange}
+                options={options}
+                />
+        </div>
+    </div>
+});
+
+ItemSubTypeFilter.displayName = 'ItemSubTypeFilter';

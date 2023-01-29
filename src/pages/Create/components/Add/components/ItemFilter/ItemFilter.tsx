@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { CardsStore } from '../../../../store';
+import { ItemSubTypeFilter } from '../ItemSubTypeFilter/ItemSubTypeFilter';
 import { ItemTypeFilter } from '../ItemTypeFilter/ItemTypeFilter';
 import { PriceFilter } from '../PriceFilter/PriceFilter';
 import { TitleFilter } from '../TitleFilter/TitleFilter';
@@ -14,6 +15,7 @@ export const ItemFilter = observer<Props>(({store}) => {
         <TitleFilter store={store} />
         <PriceFilter store={store} />
         <ItemTypeFilter store={store} />
+        <ItemSubTypeFilter store={store} />
     </div>
 });
 

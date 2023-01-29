@@ -24,13 +24,14 @@ export const Character = observer<Props>(({store, character}) => {
     return <div className={style.container}>
         <div className={style.cardsContainer}>
             <div className={style.cards}>
-            <CardComponent {...character} type="character">
+            <CardComponent {...character} view="character">
                 <div className={style.buttons}>
                     <Button onClick={onAdd}>Add item</Button>
                     <Button onClick={onRemoveCharacter}>Remove character</Button>
                 </div>
             </CardComponent>
-            {character.cards.map(card => <CardComponent key={card.id} {...card} type="item">
+            {character.cards.map(card => 
+            <CardComponent key={card.id} {...card} view="item">
                 <div>
                     <Button onClick={() => onRemoveItem(card.id)}>Remove item</Button>
                 </div>

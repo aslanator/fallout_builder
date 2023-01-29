@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { Card, CardsStore } from '../../store';
+import { Card, CardsStore, CharacterCard } from '../../store';
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './Add.module.css';
 import { toast } from 'react-toastify';
@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import { CharacterFilter } from './components/CharacterFilter/CharacterFilter';
 import { filterCharacterCards, filterItemCards } from './filterCards';
 import { ItemFilter } from './components/ItemFilter/ItemFilter';
+import { CharacterCardComponent } from '../CharacterCardComponent/CharacterCardComponent';
 
 type Props = {
     store: CardsStore;
@@ -14,7 +15,7 @@ type Props = {
 
 export const Add = observer<Props>(({store}) => {
     const characterId = store.addForCharacter;
-    const cards = characterId ? filterItemCards(store.cards, store.filter) : filterCharacterCards(store.characterCards, store.filter);
+    const cards = characterId ? filterItemCards(store.cards, store.itemFilter) : filterCharacterCards(store.characterCards, store.characterFilter);
     const filter = characterId ? <ItemFilter store={store}/> : <CharacterFilter store={store} />
     const onClose = () => {
         store.setMenuOpen(false);
@@ -57,7 +58,10 @@ export const Add = observer<Props>(({store}) => {
         <Button onClick={onClose}>Close</Button>
         {filter}
         <div className={style.cards}>
-            {cards.map(card => <button key={card.title} className={style.card} onClick={() => addCard(card)}><CardComponent type={characterId ? 'item' : 'character'} {...card} /></button>)}
+            {cards.map((card, index) => <button key={index} className={style.card} onClick={() => addCard(card)}>
+            
+            {characterId ? <CardComponent view={'item'} {...card} /> : <CharacterCardComponent {...card as CharacterCard} />}
+            </button>)}
         </div>
     </div>
     )

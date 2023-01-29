@@ -1,5 +1,5 @@
 import { extendObservable, makeAutoObservable } from "mobx";
-import { Faction, ItemType } from "../../globalTypes";
+import { Faction, ItemSubType, ItemType } from "../../globalTypes";
 
 export type OnTable = {
     id: string;
@@ -9,22 +9,31 @@ export type Card = {
     title: string;
     price: number;
     image: string;
+    lowResImage: string;
 }
 
 export type ItemCard = Card & {
-    itemType: ItemType;
+    type: ItemType;
+    subType: ItemSubType;
 }
 
 export type CharacterCard = Card & {
     faction: Faction;
-    availableItems: ItemType[];
+    availableItems: ItemSubType[];
     cards: Array<ItemCard & OnTable>;
     defaultEquipment: string[];
 }
 
-export type FilterModel = {
+export type FilterCharacter = {
     factions: Faction[];
-    itemTypes: ItemType[];
+    priceMin: number;
+    priceMax: number;
+    search: string;
+}
+
+export type FilterItem = {
+    types: ItemType[];
+    subTypes: ItemSubType[];
     priceMin: number;
     priceMax: number;
     search: string;
@@ -34,7 +43,8 @@ export type CardsStore = {
     cards: ItemCard[];
     characterCards: CharacterCard[];
     characters: Record<string, CharacterCard & OnTable>;
-    filter: FilterModel;
+    characterFilter: FilterCharacter;
+    itemFilter: FilterItem;
     addMenuOpen: boolean;
     addForCharacter: string,
     setMenuOpen: (open: boolean, characterId?: string) => void;
@@ -42,7 +52,8 @@ export type CardsStore = {
     addItemCard: (itemCard: ItemCard, characterId: string) => void;
     removeCharacterCard: (characterId: string) => void;
     removeItemCard: (characterId: string, itemCardId: string) => void;
-    changeFilter: (filter: FilterModel) => void;
+    changeCharacterFilter: (filter: FilterCharacter) => void;
+    changeItemFilter: (filter: FilterItem) => void;
 }
 
 type Args = {
@@ -52,9 +63,16 @@ type Args = {
 }
 
 export const createCardsStore = ({cards, characterCards, characters = {}}: Args): CardsStore => {
-    const filter: FilterModel = {
+    const characterFilter: FilterCharacter = {
         factions: [],
-        itemTypes: [],
+        priceMin: 0,
+        priceMax: 0,
+        search: '',
+    };
+
+    const itemFilter: FilterItem = {
+        types: [],
+        subTypes: [],
         priceMin: 0,
         priceMax: 0,
         search: '',
@@ -64,14 +82,18 @@ export const createCardsStore = ({cards, characterCards, characters = {}}: Args)
         cards,
         characterCards,
         characters,
-        filter,
+        characterFilter,
+        itemFilter,
         addMenuOpen: false,
         addForCharacter: ''
     });
 
     return extendObservable(store, {
-        changeFilter(filter: FilterModel) {
-            store.filter = filter;
+        changeCharacterFilter(filter: FilterCharacter) {
+            store.characterFilter = filter;
+        },
+        changeItemFilter(filter: FilterItem) {
+            store.itemFilter = filter;
         },
         setMenuOpen(open: boolean, characterId?: string) {
             store.addMenuOpen = open;

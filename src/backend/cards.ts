@@ -1,5 +1,5 @@
 import GSheetReader from 'g-sheets-api';
-import { ItemType } from '../globalTypes';
+import { ItemSubType, ItemType } from '../globalTypes';
 import { ItemCard } from '../pages/Create/store';
 import { googleApiKey } from './config';
 
@@ -14,7 +14,9 @@ type RawItemCard = {
     title: string;
     price: string;
     image: string;
-    itemType: ItemType;
+    lowResImage: string;
+    type: ItemType;
+    subType: ItemSubType;
 }
 
 export const getCards = async (): Promise<ItemCard[]> => {

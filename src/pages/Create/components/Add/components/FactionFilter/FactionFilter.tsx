@@ -17,7 +17,7 @@ type Option = {
 export const FactionFilter = observer<Props>(({store}) => {
 
     const onFactionChange = (value: Faction[]) => {
-        store.changeFilter({...store.filter, factions: value});
+        store.changeCharacterFilter({...store.characterFilter, factions: value});
     }
 
     const factionEntries =  Object.entries(factionKeyToLabelMap) as [Faction, string][];
@@ -32,7 +32,7 @@ export const FactionFilter = observer<Props>(({store}) => {
                 allowClear
                 style={{ width: '100%' }}
                 placeholder="Please select"
-                defaultValue={store.filter.factions}
+                defaultValue={store.characterFilter.factions}
                 onChange={onFactionChange}
                 options={options}
                 />

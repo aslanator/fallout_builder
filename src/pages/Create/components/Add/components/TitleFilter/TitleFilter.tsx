@@ -12,12 +12,12 @@ type Props = {
 export const TitleFilter = observer<Props>(({store}) => {
 
     const onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        store.changeFilter({...store.filter, search: event.target.value});
+        store.changeCharacterFilter({...store.characterFilter, search: event.target.value});
     }
 
     return <div className={style.container}>
         <div className={style.field}>
-            <div>search</div> <Input value={store.filter.search} onChange={onTitleChange}/>
+            <div>search</div> <Input value={store.characterFilter.search} onChange={onTitleChange}/>
         </div>
     </div>
 });

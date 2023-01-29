@@ -1,6 +1,5 @@
 import { Select } from "antd";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
 import { ItemType, itemTypes } from "../../../../../../globalTypes";
 import { CardsStore } from "../../../../store";
 
@@ -17,15 +16,8 @@ type Option = {
 
 export const ItemTypeFilter = observer<Props>(({store}) => {
 
-    const characterId = store.addForCharacter;
-    const defaultItems = store.characters[characterId]?.availableItems ?? [];
-
-    useEffect(() => {
-        store.changeFilter({...store.filter, itemTypes: defaultItems});
-    });
-
-    const onFactionChange = (value: ItemType[]) => {
-        store.changeFilter({...store.filter, itemTypes: value});
+    const onTypeChange = (value: ItemType[]) => {
+        store.changeItemFilter({...store.itemFilter, types: value});
     }
 
     const options: Option[] = itemTypes.map((itemType) => ({value: itemType, label: itemType}));
@@ -38,8 +30,8 @@ export const ItemTypeFilter = observer<Props>(({store}) => {
                 mode="multiple"
                 allowClear
                 placeholder="Please select"
-                defaultValue={defaultItems}
-                onChange={onFactionChange}
+                defaultValue={[]}
+                onChange={onTypeChange}
                 options={options}
                 />
         </div>
