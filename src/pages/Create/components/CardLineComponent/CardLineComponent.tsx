@@ -31,13 +31,13 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
                     <Button onClick={onRemoveCharacter}>Remove character</Button>
                 </div>
             </CardComponent>
-            <ReactSortable list={cardLine.cards} setList={(cards) => store.setCardLineCards(cardLine.cardLineId, cards)} >
-                {cardLine.cards.map(card => 
-                <CardComponent key={card.id} {...card} view="item">
-                    <div>
-                        <Button onClick={() => onRemoveItem(card.id)}>Remove item</Button>
-                    </div>
-                </CardComponent>)}
+            <ReactSortable className={style.cards} list={cardLine.cards} setList={(cards) => store.setCardLineCards(cardLine.cardLineId, cards)} >
+                    {cardLine.cards.map(card => 
+                    <CardComponent key={card.id} {...card} view="item">
+                        <div>
+                            <Button onClick={() => onRemoveItem(card.id)}>Remove item</Button>
+                        </div>
+                    </CardComponent>)}
             </ReactSortable>
             </div>
         </div>
