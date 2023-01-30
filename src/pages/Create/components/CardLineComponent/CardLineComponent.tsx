@@ -1,36 +1,36 @@
 import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
-import { CardsStore, CharacterCard, OnTable } from "../../store"
+import { CardsStore, CardLine } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
-import style from './Character.module.css';
+import style from './CardLineComponent.module.css';
 
 type Props = {
-    character: CharacterCard & OnTable;
+    cardLine: CardLine;
     store: CardsStore;
 }
 
-export const Character = observer<Props>(({store, character}) => {
+export const CardLineComponent = observer<Props>(({store, cardLine}) => {
     const onAdd = () => {
-        store.setMenuOpen(true, character.id);
+        store.setMenuOpen(true, cardLine.id);
     }
     const onRemoveCharacter = () => {
-        store.removeCharacterCard(character.id);
+        store.removeCharacterCard(cardLine.id);
     }
-    const onRemoveItem = (itemCardId: string) => {
-        store.removeItemCard(character.id, itemCardId);
+    const onRemoveItem = (itemCardId: number) => {
+        store.removeItemCard(cardLine.id, itemCardId);
     }
-    const sum = character.price + character.cards.reduce((carry, item) => carry + item.price, 0);
+    const sum = cardLine.price + cardLine.cards.reduce((carry, item) => carry + item.price, 0);
 
     return <div className={style.container}>
         <div className={style.cardsContainer}>
             <div className={style.cards}>
-            <CardComponent {...character} view="character">
+            <CardComponent {...cardLine} view="character">
                 <div className={style.buttons}>
                     <Button onClick={onAdd}>Add item</Button>
                     <Button onClick={onRemoveCharacter}>Remove character</Button>
                 </div>
             </CardComponent>
-            {character.cards.map(card => 
+            {cardLine.cards.map(card => 
             <CardComponent key={card.id} {...card} view="item">
                 <div>
                     <Button onClick={() => onRemoveItem(card.id)}>Remove item</Button>
@@ -44,4 +44,4 @@ export const Character = observer<Props>(({store, character}) => {
     </div>
 });
 
-Character.displayName = 'Character'
+CardLineComponent.displayName = 'CardLineComponent'

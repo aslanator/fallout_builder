@@ -1,11 +1,8 @@
 import { extendObservable, makeAutoObservable } from "mobx";
 import { Faction, ItemSubType, ItemType } from "../../globalTypes";
 
-export type OnTable = {
-    id: string;
-}
-
 export type Card = {
+    id: number;
     title: string;
     price: number;
     image: string;
@@ -20,8 +17,11 @@ export type ItemCard = Card & {
 export type CharacterCard = Card & {
     faction: Faction;
     availableItems: ItemSubType[];
-    cards: Array<ItemCard & OnTable>;
     defaultEquipment: string[];
+}
+
+export type CardLine = CharacterCard & {
+    cards: Array<ItemCard>;
 }
 
 export type FilterCharacter = {
@@ -42,27 +42,28 @@ export type FilterItem = {
 export type CardsStore = {
     cards: ItemCard[];
     characterCards: CharacterCard[];
-    characters: Record<string, CharacterCard & OnTable>;
+    cardLines: CardLine[];
     characterFilter: FilterCharacter;
     itemFilter: FilterItem;
     addMenuOpen: boolean;
-    addForCharacter: string,
-    setMenuOpen: (open: boolean, characterId?: string) => void;
-    addCharacterCard: (characterCard: CharacterCard) => void;
-    addItemCard: (itemCard: ItemCard, characterId: string) => void;
-    removeCharacterCard: (characterId: string) => void;
-    removeItemCard: (characterId: string, itemCardId: string) => void;
+    addForCharacter: number,
+    setMenuOpen: (open: boolean, characterId?: number) => void;
+    addNewCharacterCard: (characterCard: CharacterCard) => void;
+    addItemCard: (itemCard: ItemCard, characterId: number) => void;
+    removeCharacterCard: (characterId: number) => void;
+    removeItemCard: (characterId: number, itemCardId: number) => void;
     changeCharacterFilter: (filter: FilterCharacter) => void;
     changeItemFilter: (filter: FilterItem) => void;
+    setCardLines: (cardLines: CardLine[]) => void;
 }
 
 type Args = {
     cards: ItemCard[];
     characterCards: CharacterCard[];
-    characters?: Record<string, CharacterCard & OnTable>;
+    cardLines?: CardLine[];
 }
 
-export const createCardsStore = ({cards, characterCards, characters = {}}: Args): CardsStore => {
+export const createCardsStore = ({cards, characterCards, cardLines = []}: Args): CardsStore => {
     const characterFilter: FilterCharacter = {
         factions: [],
         priceMin: 0,
@@ -81,11 +82,11 @@ export const createCardsStore = ({cards, characterCards, characters = {}}: Args)
     const store = makeAutoObservable({
         cards,
         characterCards,
-        characters,
+        cardLines,
         characterFilter,
         itemFilter,
         addMenuOpen: false,
-        addForCharacter: ''
+        addForCharacter: 0
     });
 
     return extendObservable(store, {
@@ -95,27 +96,31 @@ export const createCardsStore = ({cards, characterCards, characters = {}}: Args)
         changeItemFilter(filter: FilterItem) {
             store.itemFilter = filter;
         },
-        setMenuOpen(open: boolean, characterId?: string) {
+        setMenuOpen(open: boolean, characterId?: number) {
             store.addMenuOpen = open;
             if(open && characterId) {
                 store.addForCharacter = characterId;
             } else {
-                store.addForCharacter = '';
+                store.addForCharacter = 0;
             }
         },
-        addCharacterCard(characterCard: CharacterCard) {
-            const id = Date.now().toString();
-            store.characters[id] = {...characterCard, id};
+        addNewCharacterCard(characterCard: CharacterCard) {
+            store.cardLines.push({...characterCard, cards: []});
         },
-        addItemCard(itemCard: ItemCard, characterId: string) {
-            const id = Date.now().toString();
-            store.characters[characterId].cards.push({...itemCard, id})
+        addItemCard(itemCard: ItemCard, characterId: number) {
+            store.cardLines.find(line => line.id === characterId)?.cards.push(itemCard)
         },
-        removeCharacterCard(characterId: string) {
-            delete store.characters[characterId];
+        removeCharacterCard(characterId: number) {
+            store.cardLines = store.cardLines.filter(line => line.id !== characterId);
         },
-        removeItemCard(characterId: string, itemCardId: string) {
-            store.characters[characterId].cards = store.characters[characterId].cards.filter(card => card.id !== itemCardId);
+        removeItemCard(characterId: number, itemCardId: number) {
+            const cardLine = store.cardLines.find(line => line.id === characterId);
+            if(cardLine) {
+                cardLine.cards = cardLine.cards.filter(card => card.id !== itemCardId);
+            }
+        },
+        setCardLines(cardLines: CardLine[]) {
+            store.cardLines = cardLines;
         }
     });
 }

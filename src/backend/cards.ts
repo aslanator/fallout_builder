@@ -11,6 +11,7 @@ export const options = {
 }
 
 type RawItemCard = {
+    id: number;
     title: string;
     price: string;
     image: string;

@@ -22,7 +22,7 @@ export const ItemSubTypeFilter = observer<Props>(({store}) => {
     }
 
     const characterId = store.addForCharacter;
-    const defaultItems = useMemo(() =>  store.characters[characterId]?.availableItems ?? [], [characterId, store.characters])
+    const defaultItems = useMemo(() =>  store.cardLines[characterId]?.availableItems ?? [], [characterId, store.cardLines])
 
     useEffect(() => {
         store.changeItemFilter({...store.itemFilter, subTypes: defaultItems});

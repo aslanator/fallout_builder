@@ -6,9 +6,10 @@ import { saveAsJson, saveAsPng, saveAsTxt } from "../../features/save";
 import { AppStore } from "../../store";
 import { Add } from "./components/Add/Add";
 import { BlockForImage } from "./components/BlockForImage/BlockForImage";
-import { Character } from "./components/Character/Character";
+import { CardLineComponent } from "./components/CardLineComponent/CardLineComponent";
 import style from './Create.module.css';
-import { CharacterCard, createCardsStore, ItemCard, OnTable } from "./store";
+import { CardLine, CharacterCard, createCardsStore, ItemCard } from "./store";
+import { ReactSortable } from "react-sortablejs";
 
 type Props = {
     appStore: AppStore;
@@ -17,33 +18,31 @@ type Props = {
 export const Create = observer<Props>(({appStore}) => {
     const forImageRef = useRef(null);
     const {cards, characterCards}  = useLoaderData() as {cards: ItemCard[], characterCards: CharacterCard[]};
-    const characters = useMemo(() => {
-        let characters: Record<string, CharacterCard & OnTable> = {};
+    const cardLines = useMemo(() => {
+        let cardLines: CardLine[] = [];
         if(appStore.json) {
             try {
-                characters = JSON.parse(appStore.json);
+                cardLines = JSON.parse(appStore.json);
             } catch(e) {
                 console.error(e);
             }
         }
-        return characters;
+        return cardLines;
     }, [appStore.json])
 
-    const store = useMemo(() => createCardsStore({cards, characterCards, characters}), [cards, characterCards, characters]);
-
-    const charactersList = Object.values(store.characters);
+    const store = useMemo(() => createCardsStore({cards, characterCards, cardLines}), [cards, characterCards, cardLines]);
 
     const onAddCharacter = () => {
         store.setMenuOpen(true);
     }
 
-    const sum = charactersList.reduce((carry, character) => {
+    const sum = store.cardLines.reduce((carry, character) => {
         const sum = character.price + character.cards.reduce((carry, item) => carry + item.price, 0);
         return carry + sum;
     }, 0);
 
     const onSaveAsTxt = () => {
-        saveAsTxt(charactersList);
+        saveAsTxt(store.cardLines);
     }
 
     const onSaveAsPng = async () => {
@@ -51,12 +50,14 @@ export const Create = observer<Props>(({appStore}) => {
     }
 
     const onSaveAsJson = async () => {
-        await saveAsJson(charactersList);
+        await saveAsJson(store.cardLines);
     }
     
     return (<div className={style.container}>
         <div className={style.characters}>
-            {charactersList.map(character => <Character key={character.id} character={character} store={store} />)}
+            <ReactSortable list={store.cardLines} setList={store.setCardLines}>
+                {store.cardLines.map(cardLine => <CardLineComponent key={cardLine.id} cardLine={cardLine} store={store} />)}
+            </ReactSortable>
         </div>
         <Button className={style.addCharacter} type="primary" onClick={onAddCharacter}>Add character</Button>
         {store.addMenuOpen && 
@@ -66,7 +67,7 @@ export const Create = observer<Props>(({appStore}) => {
         <div>
         total: {sum}
         </div>
-        { Object.values(store.characters).length > 0 && (
+        { Object.values(store.cardLines).length > 0 && (
             <div className={style.save}>
                 <Button onClick={onSaveAsJson}>Save as json</Button>
                 <Button onClick={onSaveAsPng}>Save as png</Button>
@@ -74,7 +75,7 @@ export const Create = observer<Props>(({appStore}) => {
             </div>
         )}
         <div className={style.forImage} ref={forImageRef}>
-            <BlockForImage characters={Object.values(store.characters)} sum={sum} />
+            <BlockForImage cardLines={Object.values(store.cardLines)} sum={sum} />
         </div>
     </div>);
 })

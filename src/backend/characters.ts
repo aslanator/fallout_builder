@@ -11,6 +11,7 @@ export const options = {
 }
 
 type RawCharacterCard = {
+    id: number;
     faction: Faction;
     availableItems: string;
     title: string;

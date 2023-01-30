@@ -31,7 +31,7 @@ export const Add = observer<Props>(({store}) => {
             if(addingCard.length > 1) {
                 toast(`multiple cards with title "${card.title}"`);
             }
-            const character = store.characters[characterId];
+            const character = store.cardLines[characterId];
             if(!character) {
                 toast(`trying to add card to character with id ${characterId} that does not exists`);
                 onClose();
@@ -49,7 +49,7 @@ export const Add = observer<Props>(({store}) => {
             if(addingCard.length > 1) {
                 toast(`multiple cards with title "${card.title}"`);
             }
-            store.addCharacterCard({...addingCard[0], cards: []});
+            store.addNewCharacterCard({...addingCard[0]});
         }
         onClose();
     };
@@ -58,9 +58,9 @@ export const Add = observer<Props>(({store}) => {
         <Button onClick={onClose}>Close</Button>
         {filter}
         <div className={style.cards}>
-            {cards.map((card, index) => <button key={index} className={style.card} onClick={() => addCard(card)}>
-            
-            {characterId ? <CardComponent view={'item'} {...card} /> : <CharacterCardComponent {...card as CharacterCard} />}
+            {cards.map((card) => 
+            <button key={card.id} className={style.card} onClick={() => addCard(card)}>
+                {characterId ? <CardComponent view={'item'} {...card} /> : <CharacterCardComponent {...card as CharacterCard} />}
             </button>)}
         </div>
     </div>

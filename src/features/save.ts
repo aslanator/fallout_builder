@@ -1,5 +1,4 @@
-import { CharacterCard } from "../pages/Create/store";
-import { toPng } from 'html-to-image';
+import { CardLine, CharacterCard } from "../pages/Create/store";
 import html2canvas from "html2canvas";
 
 const saveBlobAs = (blob: Blob, file_name: string) => {
@@ -15,12 +14,12 @@ const saveBlobAs = (blob: Blob, file_name: string) => {
     URL.revokeObjectURL(blobURL);
 }
 
-export const saveAsTxt = (characters: CharacterCard[]) => {
-    const totalSum = characters.reduce((carry, character) => {
+export const saveAsTxt = (cardLines: CardLine[]) => {
+    const totalSum = cardLines.reduce((carry, character) => {
         const sum = character.price + character.cards.reduce((carry, item) => carry + item.price, 0);
         return carry + sum;
     }, 0);
-    const content = characters.map(character => {
+    const content = cardLines.map(character => {
         const items = character.cards.map(card => `${card.title} (${card.price})`);
         const price = character.cards.reduce((carry, card) => carry + card.price, 0) + character.price;
         return `${character.title} (${character.price})\n${items.join('\n')}\n=${price}`;
