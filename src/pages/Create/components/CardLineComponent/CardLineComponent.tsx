@@ -31,9 +31,11 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
                     <Button onClick={onRemoveCharacter}>Remove character</Button>
                 </div>
             </CardComponent>
-            <ReactSortable className={style.cards} list={cardLine.cards} setList={(cards) => store.setCardLineCards(cardLine.cardLineId, cards)} >
+            <ReactSortable className={style.cards} list={cardLine.cards} setList={(cards) => {
+                store.setCardLineCards(cardLine.cardLineId, cards);
+            }} >
                     {cardLine.cards.map((card, index) => 
-                    <CardComponent key={index} {...card} view="item">
+                    <CardComponent key={`${index}${card.id}`} {...card} view="item">
                         <div>
                             <Button onClick={() => onRemoveItem(card)}>Remove item</Button>
                         </div>
