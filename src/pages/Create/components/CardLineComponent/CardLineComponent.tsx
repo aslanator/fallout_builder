@@ -1,5 +1,6 @@
 import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
+import { ReactSortable } from 'react-sortablejs';
 import { CardsStore, CardLine } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './CardLineComponent.module.css';
@@ -11,13 +12,13 @@ type Props = {
 
 export const CardLineComponent = observer<Props>(({store, cardLine}) => {
     const onAdd = () => {
-        store.setMenuOpen(true, cardLine.id);
+        store.setMenuOpen(true, cardLine.cardLineId);
     }
     const onRemoveCharacter = () => {
-        store.removeCharacterCard(cardLine.id);
+        store.removeCharacterCard(cardLine.cardLineId);
     }
     const onRemoveItem = (itemCardId: number) => {
-        store.removeItemCard(cardLine.id, itemCardId);
+        store.removeItemCard(cardLine.cardLineId, itemCardId);
     }
     const sum = cardLine.price + cardLine.cards.reduce((carry, item) => carry + item.price, 0);
 
@@ -30,12 +31,14 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
                     <Button onClick={onRemoveCharacter}>Remove character</Button>
                 </div>
             </CardComponent>
-            {cardLine.cards.map(card => 
-            <CardComponent key={card.id} {...card} view="item">
-                <div>
-                    <Button onClick={() => onRemoveItem(card.id)}>Remove item</Button>
-                </div>
-            </CardComponent>)}
+            <ReactSortable list={cardLine.cards} setList={(cards) => store.setCardLineCards(cardLine.cardLineId, cards)} >
+                {cardLine.cards.map(card => 
+                <CardComponent key={card.id} {...card} view="item">
+                    <div>
+                        <Button onClick={() => onRemoveItem(card.id)}>Remove item</Button>
+                    </div>
+                </CardComponent>)}
+            </ReactSortable>
             </div>
         </div>
         <div className={style.summary}>

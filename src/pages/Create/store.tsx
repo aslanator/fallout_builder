@@ -1,4 +1,5 @@
 import { extendObservable, makeAutoObservable } from "mobx";
+import { generateUniqId } from "../../features/uniqId";
 import { Faction, ItemSubType, ItemType } from "../../globalTypes";
 
 export type Card = {
@@ -22,6 +23,7 @@ export type CharacterCard = Card & {
 
 export type CardLine = CharacterCard & {
     cards: Array<ItemCard>;
+    cardLineId: number;
 }
 
 export type FilterCharacter = {
@@ -46,15 +48,16 @@ export type CardsStore = {
     characterFilter: FilterCharacter;
     itemFilter: FilterItem;
     addMenuOpen: boolean;
-    addForCharacter: number,
-    setMenuOpen: (open: boolean, characterId?: number) => void;
+    adddForCardLineId: number,
+    setMenuOpen: (open: boolean, cardLineId?: number) => void;
     addNewCharacterCard: (characterCard: CharacterCard) => void;
-    addItemCard: (itemCard: ItemCard, characterId: number) => void;
-    removeCharacterCard: (characterId: number) => void;
-    removeItemCard: (characterId: number, itemCardId: number) => void;
+    addItemCard: (itemCard: ItemCard, cardLineId: number) => void;
+    removeCharacterCard: (cardLineId: number) => void;
+    removeItemCard: (cardLineId: number, itemCardId: number) => void;
     changeCharacterFilter: (filter: FilterCharacter) => void;
     changeItemFilter: (filter: FilterItem) => void;
     setCardLines: (cardLines: CardLine[]) => void;
+    setCardLineCards: (cardLineId: number, itemCards: ItemCard[]) => void;
 }
 
 type Args = {
@@ -86,7 +89,7 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         characterFilter,
         itemFilter,
         addMenuOpen: false,
-        addForCharacter: 0
+        adddForCardLineId: 0
     });
 
     return extendObservable(store, {
@@ -96,31 +99,37 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         changeItemFilter(filter: FilterItem) {
             store.itemFilter = filter;
         },
-        setMenuOpen(open: boolean, characterId?: number) {
+        setMenuOpen(open: boolean, cardLineId?: number) {
             store.addMenuOpen = open;
-            if(open && characterId) {
-                store.addForCharacter = characterId;
+            if(open && cardLineId) {
+                store.adddForCardLineId = cardLineId;
             } else {
-                store.addForCharacter = 0;
+                store.adddForCardLineId = 0;
             }
         },
         addNewCharacterCard(characterCard: CharacterCard) {
-            store.cardLines.push({...characterCard, cards: []});
+            store.cardLines.push({...characterCard, cards: [], cardLineId: generateUniqId()});
         },
-        addItemCard(itemCard: ItemCard, characterId: number) {
-            store.cardLines.find(line => line.id === characterId)?.cards.push(itemCard)
+        addItemCard(itemCard: ItemCard, cardLineId: number) {
+            store.cardLines.find(line => line.cardLineId === cardLineId)?.cards.push(itemCard)
         },
-        removeCharacterCard(characterId: number) {
-            store.cardLines = store.cardLines.filter(line => line.id !== characterId);
+        removeCharacterCard(cardLineId: number) {
+            store.cardLines = store.cardLines.filter(line => line.cardLineId !== cardLineId);
         },
-        removeItemCard(characterId: number, itemCardId: number) {
-            const cardLine = store.cardLines.find(line => line.id === characterId);
+        removeItemCard(cardLineId: number, itemCardId: number) {
+            const cardLine = store.cardLines.find(line => line.cardLineId === cardLineId);
             if(cardLine) {
                 cardLine.cards = cardLine.cards.filter(card => card.id !== itemCardId);
             }
         },
         setCardLines(cardLines: CardLine[]) {
             store.cardLines = cardLines;
+        },
+        setCardLineCards(cardLineId: number, cards: ItemCard[]) {
+            const cardLine = store.cardLines.find(line => line.cardLineId === cardLineId);
+            if(cardLine) {
+                cardLine.cards = cards;
+            }
         }
     });
 }

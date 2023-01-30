@@ -14,14 +14,14 @@ type Props = {
 }
 
 export const Add = observer<Props>(({store}) => {
-    const characterId = store.addForCharacter;
-    const cards = characterId ? filterItemCards(store.cards, store.itemFilter) : filterCharacterCards(store.characterCards, store.characterFilter);
-    const filter = characterId ? <ItemFilter store={store}/> : <CharacterFilter store={store} />
+    const cardLineId = store.adddForCardLineId;
+    const cards = cardLineId ? filterItemCards(store.cards, store.itemFilter) : filterCharacterCards(store.characterCards, store.characterFilter);
+    const filter = cardLineId ? <ItemFilter store={store}/> : <CharacterFilter store={store} />
     const onClose = () => {
         store.setMenuOpen(false);
     }
     const addCard = (card: Card) => {
-        if(characterId) {
+        if(cardLineId) {
             const addingCard = store.cards.filter(({title}) => card.title === title);
             if(addingCard.length === 0) {
                 toast(`not found card with title "${card.title}"`);
@@ -31,13 +31,14 @@ export const Add = observer<Props>(({store}) => {
             if(addingCard.length > 1) {
                 toast(`multiple cards with title "${card.title}"`);
             }
-            const character = store.cardLines[characterId];
+            const character = store.cardLines.find(cardLine => cardLine.cardLineId === cardLineId);
+            console.log(cardLineId)
             if(!character) {
-                toast(`trying to add card to character with id ${characterId} that does not exists`);
+                toast(`trying to add card to character with id ${cardLineId} that does not exists`);
                 onClose();
                 return;
             }
-            store.addItemCard({...addingCard[0]}, characterId);
+            store.addItemCard(addingCard[0], cardLineId);
         }
         else {
             const addingCard = store.characterCards.filter(({title}) => card.title === title);
@@ -49,7 +50,7 @@ export const Add = observer<Props>(({store}) => {
             if(addingCard.length > 1) {
                 toast(`multiple cards with title "${card.title}"`);
             }
-            store.addNewCharacterCard({...addingCard[0]});
+            store.addNewCharacterCard(addingCard[0]);
         }
         onClose();
     };
@@ -60,7 +61,7 @@ export const Add = observer<Props>(({store}) => {
         <div className={style.cards}>
             {cards.map((card) => 
             <button key={card.id} className={style.card} onClick={() => addCard(card)}>
-                {characterId ? <CardComponent view={'item'} {...card} /> : <CharacterCardComponent {...card as CharacterCard} />}
+                {cardLineId ? <CardComponent view={'item'} {...card} /> : <CharacterCardComponent {...card as CharacterCard} />}
             </button>)}
         </div>
     </div>
