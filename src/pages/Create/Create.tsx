@@ -56,7 +56,7 @@ export const Create = observer<Props>(({appStore}) => {
     return (<div className={style.container}>
         <div className={style.characters}>
             <ReactSortable list={store.cardLines} setList={store.setCardLines}>
-                {store.cardLines.map(cardLine => <CardLineComponent key={cardLine.id} cardLine={cardLine} store={store} />)}
+                {store.cardLines.map(cardLine => <CardLineComponent key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
             </ReactSortable>
         </div>
         <Button className={style.addCharacter} type="primary" onClick={onAddCharacter}>Add character</Button>

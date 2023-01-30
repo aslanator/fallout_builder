@@ -53,7 +53,7 @@ export type CardsStore = {
     addNewCharacterCard: (characterCard: CharacterCard) => void;
     addItemCard: (itemCard: ItemCard, cardLineId: number) => void;
     removeCharacterCard: (cardLineId: number) => void;
-    removeItemCard: (cardLineId: number, itemCardId: number) => void;
+    removeItemCard: (cardLineId: number, card: Card) => void;
     changeCharacterFilter: (filter: FilterCharacter) => void;
     changeItemFilter: (filter: FilterItem) => void;
     setCardLines: (cardLines: CardLine[]) => void;
@@ -111,15 +111,15 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
             store.cardLines.push({...characterCard, cards: [], cardLineId: generateUniqId()});
         },
         addItemCard(itemCard: ItemCard, cardLineId: number) {
-            store.cardLines.find(line => line.cardLineId === cardLineId)?.cards.push(itemCard)
+            store.cardLines.find(line => line.cardLineId === cardLineId)?.cards.push({...itemCard})
         },
         removeCharacterCard(cardLineId: number) {
             store.cardLines = store.cardLines.filter(line => line.cardLineId !== cardLineId);
         },
-        removeItemCard(cardLineId: number, itemCardId: number) {
+        removeItemCard(cardLineId: number, card: Card) {
             const cardLine = store.cardLines.find(line => line.cardLineId === cardLineId);
             if(cardLine) {
-                cardLine.cards = cardLine.cards.filter(card => card.id !== itemCardId);
+                cardLine.cards = cardLine.cards.filter(filteredCard => card !== filteredCard);
             }
         },
         setCardLines(cardLines: CardLine[]) {
