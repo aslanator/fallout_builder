@@ -49,7 +49,6 @@ export type CardsStore = {
     itemFilter: FilterItem;
     addMenuOpen: boolean;
     adddForCardLineId: number,
-    setMenuOpen: (open: boolean, cardLineId?: number) => void;
     addNewCharacterCard: (characterCard: CharacterCard) => void;
     addItemCard: (itemCard: ItemCard, cardLineId: number) => void;
     removeCharacterCard: (cardLineId: number) => void;
@@ -98,14 +97,6 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         },
         changeItemFilter(filter: FilterItem) {
             store.itemFilter = filter;
-        },
-        setMenuOpen(open: boolean, cardLineId?: number) {
-            store.addMenuOpen = open;
-            if(open && cardLineId) {
-                store.adddForCardLineId = cardLineId;
-            } else {
-                store.adddForCardLineId = 0;
-            }
         },
         addNewCharacterCard(characterCard: CharacterCard) {
             store.cardLines.push({...characterCard, cards: [], cardLineId: generateUniqId()});

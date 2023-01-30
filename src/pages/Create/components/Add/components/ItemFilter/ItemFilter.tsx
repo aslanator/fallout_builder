@@ -8,14 +8,15 @@ import style from './ItemFilter.module.css';
 
 type Props = {
     store: CardsStore;
+    cardLineId: number;
 }
 
-export const ItemFilter = observer<Props>(({store}) => {
+export const ItemFilter = observer<Props>(({store, cardLineId}) => {
     return <div className={style.container}>
         <TitleFilter store={store} />
         <PriceFilter store={store} />
         <ItemTypeFilter store={store} />
-        <ItemSubTypeFilter store={store} />
+        <ItemSubTypeFilter store={store} cardLineId={cardLineId} />
     </div>
 });
 

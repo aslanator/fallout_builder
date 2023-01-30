@@ -9,6 +9,7 @@ import { Create } from './pages/Create/Create';
 import { getCharacters } from './backend/characters';
 import { createAppStore } from './store';
 import { ExportJson } from './pages/ExportJson/ExportJson';
+import { Add } from "./pages/Create/components/Add/Add";
 
 const store = createAppStore();
 
@@ -33,7 +34,17 @@ const createRouter = () => {
           characterCards
         };
       },
-      element: <Create appStore={store} />
+      element: <Create appStore={store} />,
+      children: [
+        {
+          path: "addCharacter",
+          element: <Add />,
+        },
+        {
+          path: "addItem/:cardLineIdString",
+          element: <Add />,
+        },
+      ],
     },
   ]);
 }
