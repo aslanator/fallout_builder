@@ -4,6 +4,7 @@ import { ReactSortable } from 'react-sortablejs';
 import { CardsStore, CardLine, Card } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './CardLineComponent.module.css';
+import {Link} from "react-router-dom";
 
 type Props = {
     cardLine: CardLine;
@@ -11,9 +12,6 @@ type Props = {
 }
 
 export const CardLineComponent = observer<Props>(({store, cardLine}) => {
-    const onAdd = () => {
-        store.setMenuOpen(true, cardLine.cardLineId);
-    }
     const onRemoveCharacter = () => {
         store.removeCharacterCard(cardLine.cardLineId);
     }
@@ -27,7 +25,7 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
             <div className={style.cards}>
             <CardComponent {...cardLine} view="character">
                 <div className={style.buttons}>
-                    <Button onClick={onAdd}>Add item</Button>
+                    <Link to={`/create/addItem/${cardLine.cardLineId}`}><Button>Add item</Button></Link>
                     <Button onClick={onRemoveCharacter}>Remove character</Button>
                 </div>
             </CardComponent>

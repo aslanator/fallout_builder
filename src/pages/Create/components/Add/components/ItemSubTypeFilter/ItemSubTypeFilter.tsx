@@ -8,6 +8,7 @@ import style from './ItemSubTypeFilter.module.css';
 
 type Props = {
     store: CardsStore;
+    cardLineId: number;
 }
 
 type Option = {
@@ -15,13 +16,12 @@ type Option = {
     value: ItemSubType;
 }
 
-export const ItemSubTypeFilter = observer<Props>(({store}) => {
+export const ItemSubTypeFilter = observer<Props>(({store, cardLineId}) => {
 
     const onSubTypeChange = (value: ItemSubType[]) => {
         store.changeItemFilter({...store.itemFilter, subTypes: value});
     }
 
-    const cardLineId = store.adddForCardLineId;
     const defaultItems = useMemo(() =>  store.cardLines.find(cardLine => cardLine.cardLineId === cardLineId)?.availableItems ?? [], [cardLineId, store.cardLines])
 
     useEffect(() => {

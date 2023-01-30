@@ -1,10 +1,9 @@
 import { Button } from "antd";
 import { observer } from "mobx-react-lite";
 import { useMemo, useRef } from "react";
-import { useLoaderData } from "react-router-dom";
+import {Link, useLoaderData, useOutlet} from "react-router-dom";
 import { saveAsJson, saveAsPng, saveAsTxt } from "../../features/save";
 import { AppStore } from "../../store";
-import { Add } from "./components/Add/Add";
 import { BlockForImage } from "./components/BlockForImage/BlockForImage";
 import { CardLineComponent } from "./components/CardLineComponent/CardLineComponent";
 import style from './Create.module.css';
@@ -31,10 +30,7 @@ export const Create = observer<Props>(({appStore}) => {
     }, [appStore.json])
 
     const store = useMemo(() => createCardsStore({cards, characterCards, cardLines}), [cards, characterCards, cardLines]);
-
-    const onAddCharacter = () => {
-        store.setMenuOpen(true);
-    }
+    const outlet = useOutlet({store});
 
     const sum = store.cardLines.reduce((carry, character) => {
         const sum = character.price + character.cards.reduce((carry, item) => carry + item.price, 0);
@@ -59,11 +55,8 @@ export const Create = observer<Props>(({appStore}) => {
                 {store.cardLines.map(cardLine => <CardLineComponent key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
             </ReactSortable>
         </div>
-        <Button className={style.addCharacter} type="primary" onClick={onAddCharacter}>Add character</Button>
-        {store.addMenuOpen && 
-        <div className={style.add}>
-            <Add store={store} />
-        </div>}
+        <Link to="/create/addCharacter"><Button className={style.addCharacter} type="primary">Add character</Button></Link>
+        {outlet}
         <div>
         total: {sum}
         </div>
