@@ -10,8 +10,12 @@ type Props = {
 }
 
 export const CharacterFilter = observer<Props>(({store}) => {
+    const onTitleChange = (value: string) => {
+        store.changeCharacterFilter({...store.characterFilter, search: value});
+    }
+
     return <div className={style.container}>
-        <TitleFilter store={store} />
+        <TitleFilter onChange={onTitleChange} value={store.characterFilter.search}/>
         <PriceFilter store={store} />
         <FactionFilter store={store} />
     </div>

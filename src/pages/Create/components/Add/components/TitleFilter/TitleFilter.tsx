@@ -1,23 +1,23 @@
 import { Input } from "antd";
 import { observer } from "mobx-react-lite";
 import { ChangeEvent } from "react";
-import { CardsStore } from "../../../../store";
 
 import style from './TitleFilter.module.css';
 
 type Props = {
-    store: CardsStore;
+    onChange: (value: string) => void;
+    value: string;
 }
 
-export const TitleFilter = observer<Props>(({store}) => {
+export const TitleFilter= observer<Props>(({value, onChange}) => {
 
     const onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        store.changeCharacterFilter({...store.characterFilter, search: event.target.value});
+        onChange(event.target.value)
     }
 
     return <div className={style.container}>
         <div className={style.field}>
-            <div>search</div> <Input value={store.characterFilter.search} onChange={onTitleChange}/>
+            <div>search</div> <Input value={value} onChange={onTitleChange}/>
         </div>
     </div>
 });

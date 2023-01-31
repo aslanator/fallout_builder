@@ -22,6 +22,7 @@ export const filterCharacterCards = (cards: CharacterCard[], {priceMin, priceMax
 }
 
 export const filterItemCards = (cards: ItemCard[], {priceMin, priceMax, types, subTypes, search}: FilterItem) => {
+    const searchRegexp = new RegExp(`${search.replace('.', '\\.').replace('*', '.*')}`, 'i');
     const filteredCards = cards.filter(card => {
         if(priceMin && card.price < priceMin) {
             return false;
@@ -29,7 +30,7 @@ export const filterItemCards = (cards: ItemCard[], {priceMin, priceMax, types, s
         if(priceMax && card.price > priceMax) {
             return false;
         }
-        if(search && !new RegExp(`${search}`).test(card.title)) {
+        if(search && !searchRegexp.test(card.title)) {
             return false;
         }
         if(types.length > 0 && !types.includes(card.type)) {
