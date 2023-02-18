@@ -8,11 +8,17 @@
     overflow-y: hidden;
 }
 
-.cards {
+.line {
     display: flex;
     gap: 10px;
     background: rgb(232, 232, 232);
+    width: max-content;
     padding: 5px;
+}
+
+.cards {
+    display: flex;
+    gap: 10px;
     border-radius: 5px;
     width: max-content;
 }
@@ -28,3 +34,22 @@
     display: flex;
     gap: 5px;
 }
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.verticalCardWithMode {
+    display: flex;
+}
+
+.verticalCardWithMode>div:nth-child(1) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.verticalCardWithMode>div:nth-child(2) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;}

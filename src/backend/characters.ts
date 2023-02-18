@@ -23,7 +23,6 @@ type RawCharacterCard = {
 
 export const getCharacters = async (): Promise<CharacterCard[]> => {
     return new Promise((resolve, reject) => GSheetReader(options, (result: RawCharacterCard[]) => {
-        console.log({result})
         resolve(result.map(item => {
             return {...item, price: Number(item.price), defaultEquipment: item.defaultEquipment?.split(', ') ?? [], availableItems: item.availableItems?.split(', ') as ItemSubType[] ?? [], cards: []};
         }).sort((a, b) => {

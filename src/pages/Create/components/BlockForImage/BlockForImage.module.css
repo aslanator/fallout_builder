@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .line {
@@ -17,18 +18,26 @@
 
 .card {
     position: relative;
-    max-width: 500px;
     flex-shrink: 0;
 }
 
+.cardHorizontal {
+    height: calc(50% - 5px)
+}
+
+.cardVertical {
+    height: 100%;
+}
+
 .card img {
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .characterCard {
     position: relative;
     width: 500px;
-    height: 700px;
+    height: 100%;
     background-size: cover;
     flex-shrink: 0;
 }
@@ -49,6 +58,7 @@
     justify-content: center;
     writing-mode: initial;
     text-orientation:initial;
+    z-index: 999;
 }
 
 .total {
@@ -62,4 +72,5 @@
     writing-mode: vertical-lr;
     text-orientation: upright;
     display: flex;
+    gap: 10px;
 }

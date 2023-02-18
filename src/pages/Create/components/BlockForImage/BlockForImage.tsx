@@ -1,4 +1,6 @@
-import { CardLine } from '../../store';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
+import { CardLine, getCardStretch } from '../../store';
 import style from './BlockForImage.module.css';
 
 type Props = {
@@ -6,7 +8,7 @@ type Props = {
     sum: number;
 }
 
-export const BlockForImage: React.FC<Props> = ({cardLines, sum}) => {
+export const BlockForImage: React.FC<Props> = observer(({cardLines, sum}) => {
     return <div className={style.container}>
         {cardLines.map((cardLine) => {
             const price = cardLine.cards.reduce((carry, card) => carry + card.price, 0) + cardLine.price;
@@ -17,11 +19,19 @@ export const BlockForImage: React.FC<Props> = ({cardLines, sum}) => {
                         <div className={style.price}>{cardLine.price}</div>
                     </div>
                     <div className={style.cards}>
-                        {cardLine.cards.map((card, index) => 
-                        <div className={style.card} key={index}>
-                            <img src={card.image} alt="card"  />
-                            <div className={style.price}>{card.price}</div>
-                        </div>
+                        {cardLine.cards.map((card) => 
+                            (<React.Fragment key={`${card.id}${card.mod?.id}`}>
+                                <div className={`${style.card} ${getCardStretch(card) === 'HORIZONTAL' ? style.cardHorizontal : style.cardVertical}`}>
+                                    <img src={card.image} alt="card"  />
+                                    <div className={style.price}>{card.price}</div>
+                                </div>
+                                {card.mod && (
+                                    <div className={`${style.card} ${getCardStretch(card.mod) === 'HORIZONTAL' ? style.cardHorizontal : style.cardVertical}`} >
+                                        <img src={card.mod.image} alt="card"  />
+                                        <div className={style.price}>{card.mod.price}</div>
+                                    </div>
+                                )}
+                            </React.Fragment>)
                         )}
                     </div>
                 </div>
@@ -29,4 +39,6 @@ export const BlockForImage: React.FC<Props> = ({cardLines, sum}) => {
         })}
         <div className={style.total}>TOTAL: {sum}</div>
     </div>
-}
+});
+
+BlockForImage.displayName = 'BlockForImage';

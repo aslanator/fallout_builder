@@ -1,16 +1,22 @@
 import { Img } from '../../../../features/components/Img/Img';
-import { Card } from '../../store';
+import { getCardStretch, ItemCard } from '../../store';
 import style from './CardComponent.module.css';
+import { HorizontalItem } from './components/HorizontalItem/HorizontalItem';
+import { VerticalItem } from './components/VerticalItem/VerticalItem';
 
-type Props = Card & {
+type Props = ItemCard & {
     children?: React.ReactNode;
-    view: 'character' | 'item';
 }
 
-export const CardComponent: React.FC<Props> = ({ price, image, children, view, title }) => {
-    return <div className={`${style.container} ${view === 'character' ? style.character : style.item}`}>
-        <div className={style.image}><Img src={image} title={title}/></div>
-        <div className={style.price}>{price}</div>
-        {children}
-    </div>
+export const CardComponent: React.FC<Props> = (itemCard) => {
+    const stretch = getCardStretch(itemCard);
+
+    if(stretch === 'HORIZONTAL') {
+        return <HorizontalItem {...itemCard} />
+    }
+    if(stretch === 'VERTICAL') {
+        return <VerticalItem {...itemCard} />
+    }
+    
+    return null;
 }

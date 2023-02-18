@@ -15,6 +15,12 @@ export type ItemCard = Card & {
     subType: ItemSubType;
 }
 
+
+export type ItemCardOnLine = ItemCard & {
+    id: number;
+    mod?: ItemCard
+}
+
 export type CharacterCard = Card & {
     faction: Faction;
     availableItems: ItemSubType[];
@@ -22,7 +28,7 @@ export type CharacterCard = Card & {
 }
 
 export type CardLine = CharacterCard & {
-    cards: Array<ItemCard>;
+    cards: Array<ItemCardOnLine>;
     cardLineId: number;
 }
 
@@ -41,6 +47,10 @@ export type FilterItem = {
     search: string;
 }
 
+type AddMenuOptionsArg = { cardLineId: number; cardLineItemId: number;} 
+| {cardLineId: number, cardLineItemId?: undefined}
+| {cardLineId?: undefined, cardLineItemId?: undefined};
+
 export type CardsStore = {
     cards: ItemCard[];
     characterCards: CharacterCard[];
@@ -48,8 +58,11 @@ export type CardsStore = {
     characterFilter: FilterCharacter;
     itemFilter: FilterItem;
     addMenuOpen: boolean;
-    adddForCardLineId: number,
-    setMenuOpen: (open: boolean, cardLineId?: number) => void;
+    addMenuOptions: {
+        cardLineId: number;
+        cardLineItemId: number;
+    },
+    setMenuOpen: (open: boolean, options: AddMenuOptionsArg) => void;
     addNewCharacterCard: (characterCard: CharacterCard) => void;
     addItemCard: (itemCard: ItemCard, cardLineId: number) => void;
     removeCharacterCard: (cardLineId: number) => void;
@@ -58,12 +71,27 @@ export type CardsStore = {
     changeItemFilter: (filter: FilterItem) => void;
     setCardLines: (cardLines: CardLine[]) => void;
     setCardLineCards: (cardLineId: number, itemCards: ItemCard[]) => void;
+    addItemMod: (itemCard: ItemCard, cardLineId: number, cardLineItemId: number) => void;
+    removeItemMod: (cardLineId: number, cardLineItemId: number) => void;
 }
 
 type Args = {
     cards: ItemCard[];
     characterCards: CharacterCard[];
     cardLines?: CardLine[];
+}
+
+type Stretch = 'VERTICAL' | 'HORIZONTAL';
+
+export const getCardStretch = (card: ItemCard): Stretch => {
+    if(["Alcohol", "Chem", "Power Armor"].includes(card.type)){
+        return 'VERTICAL';
+    }
+    return 'HORIZONTAL';
+}
+
+export const cardCanBeModded = (card: ItemCard): boolean => {
+    return ['Armor', 'Clothes', 'Melee','Pistol', 'Rifle', 'Heavy Weapon', 'Thrown Weapon', 'Power Armor'].includes(card.type);
 }
 
 export const createCardsStore = ({cards, characterCards, cardLines = []}: Args): CardsStore => {
@@ -89,7 +117,10 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         characterFilter,
         itemFilter,
         addMenuOpen: false,
-        adddForCardLineId: 0
+        addMenuOptions: {
+            cardLineId: 0,
+            cardLineItemId: 0
+        }
     });
 
     return extendObservable(store, {
@@ -99,19 +130,35 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         changeItemFilter(filter: FilterItem) {
             store.itemFilter = filter;
         },
-        setMenuOpen(open: boolean, cardLineId?: number) {
+        setMenuOpen(open: boolean, {cardLineId, cardLineItemId}: AddMenuOptionsArg) {
             store.addMenuOpen = open;
-            if(open && cardLineId) {
-                store.adddForCardLineId = cardLineId;
+            if (open && cardLineItemId) {
+                store.addMenuOptions = {
+                    cardLineId,
+                    cardLineItemId
+                }
+                store.itemFilter = {...store.itemFilter, types: ["Mod"]};
+            } else if(open && cardLineId) {
+                store.addMenuOptions = {
+                    cardLineId,
+                    cardLineItemId: 0
+                }
+                const defaultItems = store.cardLines.find(cardLine => cardLine.cardLineId === cardLineId)?.availableItems || [];
+            
+                store.itemFilter = {...store.itemFilter, subTypes: defaultItems, types: []};
+
             } else {
-                store.adddForCardLineId = 0;
+                store.addMenuOptions = {
+                    cardLineId: 0,
+                    cardLineItemId: 0
+                }
             }
         },
         addNewCharacterCard(characterCard: CharacterCard) {
             store.cardLines.push({...characterCard, cards: [], cardLineId: generateUniqId()});
         },
         addItemCard(itemCard: ItemCard, cardLineId: number) {
-            store.cardLines.find(line => line.cardLineId === cardLineId)?.cards.push({...itemCard})
+            store.cardLines.find(line => line.cardLineId === cardLineId)?.cards.push({...itemCard, id: generateUniqId()})
         },
         removeCharacterCard(cardLineId: number) {
             store.cardLines = store.cardLines.filter(line => line.cardLineId !== cardLineId);
@@ -129,6 +176,24 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
             const cardLine = store.cardLines.find(line => line.cardLineId === cardLineId);
             if(cardLine) {
                 cardLine.cards = cards;
+            }
+        },
+        addItemMod: (itemCard: ItemCard, cardLineId: number, cardLineItemId: number) => {
+            const cardLine = store.cardLines.find(line => line.cardLineId === cardLineId);
+            if(cardLine) {
+                const card = cardLine.cards.find(card => card.id === cardLineItemId);
+                if(card) {
+                    card.mod = itemCard;
+                }
+            }
+        },
+        removeItemMod: (cardLineId: number, cardLineItemId: number) => {
+            const cardLine = store.cardLines.find(line => line.cardLineId === cardLineId);
+            if(cardLine) {
+                const card = cardLine.cards.find(card => card.id === cardLineItemId);
+                if(card) {
+                    card.mod = undefined;
+                }
             }
         }
     });

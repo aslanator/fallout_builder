@@ -30,7 +30,7 @@ export const ItemTypeFilter = observer<Props>(({store}) => {
                 mode="multiple"
                 allowClear
                 placeholder="Please select"
-                defaultValue={[]}
+                defaultValue={store.itemFilter.types}
                 onChange={onTypeChange}
                 options={options}
                 />

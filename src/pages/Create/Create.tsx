@@ -33,7 +33,7 @@ export const Create = observer<Props>(({appStore}) => {
     const store = useMemo(() => createCardsStore({cards, characterCards, cardLines}), [cards, characterCards, cardLines]);
 
     const onAddCharacter = () => {
-        store.setMenuOpen(true);
+        store.setMenuOpen(true, {});
     }
 
     const sum = store.cardLines.reduce((carry, character) => {
@@ -67,15 +67,15 @@ export const Create = observer<Props>(({appStore}) => {
         <div>
         total: {sum}
         </div>
-        { Object.values(store.cardLines).length > 0 && (
+        { store.cardLines.length > 0 && (
             <div className={style.save}>
-                <Button onClick={onSaveAsJson}>Save as json</Button>
+                {/* <Button onClick={onSaveAsJson}>Save as json</Button> */}
                 <Button onClick={onSaveAsPng}>Save as png</Button>
                 <Button onClick={onSaveAsTxt}>Save as txt</Button>
             </div>
         )}
         <div className={style.forImage} ref={forImageRef}>
-            <BlockForImage cardLines={Object.values(store.cardLines)} sum={sum} />
+            <BlockForImage cardLines={store.cardLines} sum={sum} />
         </div>
     </div>);
 })

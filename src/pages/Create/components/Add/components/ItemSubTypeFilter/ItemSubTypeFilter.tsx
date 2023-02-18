@@ -21,13 +21,6 @@ export const ItemSubTypeFilter = observer<Props>(({store}) => {
         store.changeItemFilter({...store.itemFilter, subTypes: value});
     }
 
-    const cardLineId = store.adddForCardLineId;
-    const defaultItems = useMemo(() =>  store.cardLines.find(cardLine => cardLine.cardLineId === cardLineId)?.availableItems ?? [], [cardLineId, store.cardLines])
-
-    useEffect(() => {
-        store.changeItemFilter({...store.itemFilter, subTypes: defaultItems});
-    }, [defaultItems, store]);
-
     const options: Option[] = itemSubTypes.map((itemType) => ({value: itemType, label: itemType}));
 
     return <div className={style.container}>
@@ -38,7 +31,7 @@ export const ItemSubTypeFilter = observer<Props>(({store}) => {
                 mode="multiple"
                 allowClear
                 placeholder="Please select"
-                defaultValue={defaultItems}
+                defaultValue={store.itemFilter.subTypes}
                 onChange={onSubTypeChange}
                 options={options}
                 />
