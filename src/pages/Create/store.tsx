@@ -156,6 +156,14 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         },
         addNewCharacterCard(characterCard: CharacterCard) {
             store.cardLines.push({...characterCard, cards: [], cardLineId: generateUniqId()});
+            for(const defaultEquipment of characterCard.defaultEquipment) {
+                const itemCard = store.cards.find(card => card.title === defaultEquipment);
+                if(itemCard) {
+                    store.cardLines[store.cardLines.length - 1].cards.push({...itemCard, id: generateUniqId(), price: 0})
+                } else {
+                    console.error(`Can\'t find equipment with name ${defaultEquipment}`);
+                }
+            }
         },
         addItemCard(itemCard: ItemCard, cardLineId: number) {
             store.cardLines.find(line => line.cardLineId === cardLineId)?.cards.push({...itemCard, id: generateUniqId()})
