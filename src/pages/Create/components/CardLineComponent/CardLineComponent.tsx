@@ -27,7 +27,7 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
     const onAddMode = (card: ItemCardOnLine) => {
         store.setMenuOpen(true, {cardLineItemId: card.id, cardLineId: cardLine.cardLineId});
     }
-    const sum = cardLine.price + cardLine.cards.reduce((carry, item) => carry + item.price, 0);
+    const sum = cardLine.price + cardLine.cards.reduce((carry, item) => carry + item.price + (item.mod?.price || 0), 0);
 
     return <div className={style.container}>
         <div className={style.cardsContainer}>

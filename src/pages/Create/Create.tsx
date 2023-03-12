@@ -37,7 +37,7 @@ export const Create = observer<Props>(({appStore}) => {
     }
 
     const sum = store.cardLines.reduce((carry, character) => {
-        const sum = character.price + character.cards.reduce((carry, item) => carry + item.price, 0);
+        const sum = character.price + character.cards.reduce((carry, item) => carry + item.price + (item.mod?.price || 0), 0);
         return carry + sum;
     }, 0);
 
