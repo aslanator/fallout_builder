@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { CardLine, getCardStretch } from '../../store';
+import { calculateCardLineSum, CardLine, getCardStretch } from '../../store';
 import style from './BlockForImage.module.css';
 
 type Props = {
@@ -11,10 +11,10 @@ type Props = {
 export const BlockForImage: React.FC<Props> = observer(({cardLines, sum}) => {
     return <div className={style.container}>
         {cardLines.map((cardLine) => {
-            const price = cardLine.cards.reduce((carry, card) => carry + card.price, 0) + cardLine.price;
+            const price = calculateCardLineSum(cardLine);
             return (
                 <div className={style.line} key={cardLine.cardLineId}>
-                    <div className={style.linePrice}>{price}</div>
+                    <div className={style.linePrice}>{price}{cardLine.multiplier > 1 && <p>(x{cardLine.multiplier})</p>}</div>
                     <div className={style.characterCard} style={{backgroundImage: `url("${cardLine.image}")`}}>
                         <div className={style.price}>{cardLine.price}</div>
                     </div>

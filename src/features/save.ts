@@ -1,4 +1,4 @@
-import { CardLine, CharacterCard } from "../pages/Create/store";
+import { calculateCardLineSum, calculateTotalSum, CardLine, CharacterCard } from "../pages/Create/store";
 import html2canvas from "html2canvas";
 
 const saveBlobAs = (blob: Blob, file_name: string) => {
@@ -15,14 +15,15 @@ const saveBlobAs = (blob: Blob, file_name: string) => {
 }
 
 export const saveAsTxt = (cardLines: CardLine[]) => {
-    const totalSum = cardLines.reduce((carry, character) => {
-        const sum = character.price + character.cards.reduce((carry, item) => carry + item.price, 0);
-        return carry + sum;
-    }, 0);
+    const totalSum = calculateTotalSum(cardLines);
     const content = cardLines.map(character => {
         const items = character.cards.map(card => `${card.title} (${card.price})`);
-        const price = character.cards.reduce((carry, card) => carry + card.price, 0) + character.price;
-        return `${character.title} (${character.price})\n${items.join('\n')}\n=${price}`;
+        const price = calculateCardLineSum(character);
+        let text = `${character.title} (${character.price})\n${items.join('\n')}\n=${price}`;
+        if(character.multiplier > 1) {
+            text = `${text} (x${(character.multiplier)})`;
+        }
+        return text;
     })
     const file = new Blob([`${content.join('\n\n')}\n\nTotal:${totalSum}`], { type: 'text/plain' });
     saveBlobAs(file, `fallout_builder_${new Date().toString()}.txt`);

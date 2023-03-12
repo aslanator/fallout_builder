@@ -1,7 +1,9 @@
-import { Button } from 'antd';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, InputNumber } from 'antd';
 import { observer } from 'mobx-react-lite';
+import { ChangeEvent } from 'react';
 import { ReactSortable } from 'react-sortablejs';
-import { CardsStore, CardLine, Card, ItemCardOnLine, cardCanBeModded, getCardStretch } from "../../store"
+import { CardsStore, CardLine, Card, ItemCardOnLine, cardCanBeModded, getCardStretch, calculateCardLineSum } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
 import { CharacterCardComponent } from '../CharacterCardComponent/CharacterCardComponent';
 import style from './CardLineComponent.module.css';
@@ -27,7 +29,15 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
     const onAddMode = (card: ItemCardOnLine) => {
         store.setMenuOpen(true, {cardLineItemId: card.id, cardLineId: cardLine.cardLineId});
     }
-    const sum = cardLine.price + cardLine.cards.reduce((carry, item) => carry + item.price + (item.mod?.price || 0), 0);
+    const sum = calculateCardLineSum(cardLine);
+
+    const onPlusCardMultiplier = () => {
+        store.setCardLineMultiplier(cardLine.cardLineId, (cardLine.multiplier + 1))
+    }
+
+    const onMinusCardMultiplier = () => {
+        store.setCardLineMultiplier(cardLine.cardLineId, Math.max(1, cardLine.multiplier - 1))
+    }
 
     return <div className={style.container}>
         <div className={style.cardsContainer}>
@@ -62,7 +72,8 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
             </div>
         </div>
         <div className={style.summary}>
-            total: {sum}
+            total: {sum} {cardLine.multiplier > 1 && <span>({sum / cardLine.multiplier})</span>}
+            <div><Button disabled={cardLine.multiplier < 2} onClick={onMinusCardMultiplier}><MinusOutlined /></Button> x: {cardLine.multiplier} <Button onClick={onPlusCardMultiplier}><PlusOutlined /></Button></div>
         </div>
     </div>
 });

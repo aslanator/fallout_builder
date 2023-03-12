@@ -8,7 +8,7 @@ import { Add } from "./components/Add/Add";
 import { BlockForImage } from "./components/BlockForImage/BlockForImage";
 import { CardLineComponent } from "./components/CardLineComponent/CardLineComponent";
 import style from './Create.module.css';
-import { CardLine, CharacterCard, createCardsStore, ItemCard } from "./store";
+import { calculateTotalSum, CardLine, CharacterCard, createCardsStore, ItemCard } from "./store";
 import { ReactSortable } from "react-sortablejs";
 
 type Props = {
@@ -36,10 +36,7 @@ export const Create = observer<Props>(({appStore}) => {
         store.setMenuOpen(true, {});
     }
 
-    const sum = store.cardLines.reduce((carry, character) => {
-        const sum = character.price + character.cards.reduce((carry, item) => carry + item.price + (item.mod?.price || 0), 0);
-        return carry + sum;
-    }, 0);
+    const sum = calculateTotalSum(store.cardLines);
 
     const onSaveAsTxt = () => {
         saveAsTxt(store.cardLines);

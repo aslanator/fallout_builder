@@ -30,6 +30,7 @@ export type CharacterCard = Card & {
 export type CardLine = CharacterCard & {
     cards: Array<ItemCardOnLine>;
     cardLineId: number;
+    multiplier: number;
 }
 
 export type FilterCharacter = {
@@ -73,6 +74,7 @@ export type CardsStore = {
     setCardLineCards: (cardLineId: number, itemCards: ItemCard[]) => void;
     addItemMod: (itemCard: ItemCard, cardLineId: number, cardLineItemId: number) => void;
     removeItemMod: (cardLineId: number, cardLineItemId: number) => void;
+    setCardLineMultiplier: (cardLineId: number, multiplier: number) => void;
 }
 
 type Args = {
@@ -92,6 +94,14 @@ export const getCardStretch = (card: ItemCard): Stretch => {
 
 export const cardCanBeModded = (card: ItemCard): boolean => {
     return ['Armor', 'Clothes', 'Melee','Pistol', 'Rifle', 'Heavy Weapon', 'Thrown Weapon', 'Power Armor'].includes(card.type);
+}
+
+export const calculateCardLineSum = (cardLine: CardLine) => {
+    return (cardLine.price + cardLine.cards.reduce((carry, item) => carry + item.price + (item.mod?.price || 0), 0)) * cardLine.multiplier;
+}
+
+export const calculateTotalSum = (cardLines: CardLine[]) => {
+    return cardLines.reduce((carry, cardLine) => carry + calculateCardLineSum(cardLine), 0);
 }
 
 export const createCardsStore = ({cards, characterCards, cardLines = []}: Args): CardsStore => {
@@ -155,7 +165,7 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
             }
         },
         addNewCharacterCard(characterCard: CharacterCard) {
-            store.cardLines.push({...characterCard, cards: [], cardLineId: generateUniqId()});
+            store.cardLines.push({...characterCard, cards: [], cardLineId: generateUniqId(), multiplier: 1});
             for(const defaultEquipment of characterCard.defaultEquipment) {
                 const itemCard = store.cards.find(card => card.title === defaultEquipment);
                 if(itemCard) {
@@ -202,6 +212,12 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
                 if(card) {
                     card.mod = undefined;
                 }
+            }
+        },
+        setCardLineMultiplier: (cardLineId: number, multiplier: number) => {
+            const cardLine = store.cardLines.find(line => line.cardLineId === cardLineId);
+            if(cardLine) {
+                cardLine.multiplier = multiplier;
             }
         }
     });
