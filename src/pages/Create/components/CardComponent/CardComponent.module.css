@@ -1,4 +1,12 @@
 .image {
+    width: 200px;
+    flex-grow: 0;
+    overflow: hidden;
+    border-radius: 5px;
+    height: 135px;
+}
+
+.verticalImage {
     width: 170px;
     flex-grow: 0;
     overflow: hidden;
@@ -10,19 +18,8 @@
     max-width: 100%;
 }
 
-.horisontalImage {
-    width: 200px;
-    flex-grow: 0;
-    overflow: hidden;
-    border-radius: 5px;
-    height: 135px;
-}
-
-.horisontalImage img {
-    max-width: 100%;
-}
-
 .container {
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -38,8 +35,7 @@
     box-sizing: border-box;
 }
 
-.horisontalContainer {
-    height: 100%;
+.verticalContainer {
     display: flex;
     flex-direction: column;
     gap: 5px;

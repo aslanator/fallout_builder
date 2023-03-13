@@ -3,7 +3,7 @@ import { Button, InputNumber } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { ChangeEvent } from 'react';
 import { ReactSortable } from 'react-sortablejs';
-import { CardsStore, CardLine, Card, ItemCardOnLine, cardCanBeModded, getCardStretch, calculateCardLineSum } from "../../store"
+import { CardsStore, CardLine, Card, ItemCardOnLine, cardCanBeModded, getCardStretch, calculateCardLineSum, ItemCard } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './CardLineComponent.module.css';
 
@@ -38,10 +38,12 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
         store.setCardLineMultiplier(cardLine.cardLineId, Math.max(1, cardLine.multiplier - 1))
     }
 
+    console.log(cardLine.cards)
+
     return <div className={style.container}>
         <div className={style.cardsContainer}>
             <div className={style.line}>
-                <CardComponent {...cardLine}>
+                <CardComponent {...cardLine as Card}>
                     <div className={style.buttons}>
                         <Button onClick={onAdd}>Add item</Button>
                         <Button onClick={onRemoveCharacter}>Remove character</Button>
@@ -51,15 +53,15 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
                     store.setCardLineCards(cardLine.cardLineId, cards);
                 }} >
                         {cardLine.cards.map((card, index) => (
-                            <div className={`${getCardStretch(card) === 'VERTICAL' && card.mod ? style.verticalCardWithMode : style.card}`} key={`${card.id}${card.mod?.id}`}>
-                                <CardComponent key={`${index}${card.id}`} {...card}>
+                            <div className={`${getCardStretch(card.type) === 'VERTICAL' && card.mod ? style.verticalCardWithMode : style.card}`} key={`${card.id}${card.mod?.id}`}>
+                                <CardComponent key={`${index}${card.id}`} {...card as Card}>
                                     <div className={style.buttons}>
                                         {cardCanBeModded(card) && <Button onClick={() => onAddMode(card)}>{card.mod ? 'Change mode' : 'Add mode'}</Button>}
                                         <Button onClick={() => onRemoveItem(card)}>Remove item</Button>
                                     </div>
                                 </CardComponent>
                                 {card.mod && (
-                                    <CardComponent key={`${index}${card.mod.id}`} {...card.mod}>
+                                    <CardComponent key={`${index}${card.mod.id}`} {...card.mod as Card}>
                                         <div className={style.buttons}>
                                             <Button onClick={() => onRemoveMod(card)}>Remove mod</Button>
                                         </div>
