@@ -86,10 +86,10 @@ type Args = {
 type Stretch = 'VERTICAL' | 'HORIZONTAL';
 
 export const getCardStretch = (card: ItemCard): Stretch => {
-    if(["Alcohol", "Chem", "Power Armor"].includes(card.type)){
-        return 'VERTICAL';
+    if(!["Alcohol", "Chem", "Power Armor"].includes(card.type)){
+        return 'HORIZONTAL';
     }
-    return 'HORIZONTAL';
+    return 'VERTICAL';
 }
 
 export const cardCanBeModded = (card: ItemCard): boolean => {

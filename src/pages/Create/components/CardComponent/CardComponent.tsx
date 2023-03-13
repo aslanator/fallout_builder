@@ -1,22 +1,24 @@
 import { Img } from '../../../../features/components/Img/Img';
-import { getCardStretch, ItemCard } from '../../store';
+import { getCardStretch, ItemCard, CharacterCard } from '../../store';
 import style from './CardComponent.module.css';
-import { HorizontalItem } from './components/HorizontalItem/HorizontalItem';
-import { VerticalItem } from './components/VerticalItem/VerticalItem';
+import classnames from 'classnames/bind'; 
 
-type Props = ItemCard & {
+type Props = any & ItemCard & {
     children?: React.ReactNode;
 }
 
-export const CardComponent: React.FC<Props> = (itemCard) => {
-    const stretch = getCardStretch(itemCard);
+const classNames = classnames.bind(style);
 
-    if(stretch === 'HORIZONTAL') {
-        return <HorizontalItem {...itemCard} />
-    }
-    if(stretch === 'VERTICAL') {
-        return <VerticalItem {...itemCard} />
-    }
-    
-    return null;
+export const CardComponent: React.FC<Props> = (itemCard) => {
+    const { image, title, price, children } = itemCard;
+    const stretch = getCardStretch(itemCard);
+    const isHorisontal = stretch === 'HORIZONTAL' && !itemCard.faction;
+
+    return <div className={classNames({'container': true, 'horisontalContainer': isHorisontal})}>
+        <div className={classNames({'image': true, 'horisontalImage': isHorisontal})}>
+            <Img src={image} title={title}/>
+        </div>
+        <div className={style.price}>{price}</div>
+        {children}
+    </div>
 }

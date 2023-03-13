@@ -50,20 +50,27 @@ export const Create = observer<Props>(({appStore}) => {
         await saveAsJson(store.cardLines);
     }
     
-    return (<div className={style.container}>
+    return (
+    <div className={style.container}>
+        <div className={style.controllers}>
+            <Button className={style.addCharacterButton} type="primary" onClick={onAddCharacter}>Add character</Button>
+            <div>
+                {sum} points
+            </div>
+            <div className={style.saveBlock}>
+                <Button onClick={onSaveAsPng}>Save as png</Button>
+                <Button onClick={onSaveAsTxt}>Save as txt</Button>
+            </div>
+        </div>
         <div className={style.characters}>
             <ReactSortable list={store.cardLines} setList={store.setCardLines}>
                 {store.cardLines.map(cardLine => <CardLineComponent key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
             </ReactSortable>
         </div>
-        <Button className={style.addCharacter} type="primary" onClick={onAddCharacter}>Add character</Button>
-        {store.addMenuOpen && 
+        {store.addMenuOpen &&
         <div className={style.add}>
             <Add store={store} />
         </div>}
-        <div>
-        total: {sum}
-        </div>
         { store.cardLines.length > 0 && (
             <div className={style.save}>
                 {/* <Button onClick={onSaveAsJson}>Save as json</Button> */}

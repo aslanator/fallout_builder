@@ -5,7 +5,6 @@ import { ChangeEvent } from 'react';
 import { ReactSortable } from 'react-sortablejs';
 import { CardsStore, CardLine, Card, ItemCardOnLine, cardCanBeModded, getCardStretch, calculateCardLineSum } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
-import { CharacterCardComponent } from '../CharacterCardComponent/CharacterCardComponent';
 import style from './CardLineComponent.module.css';
 
 type Props = {
@@ -42,12 +41,12 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
     return <div className={style.container}>
         <div className={style.cardsContainer}>
             <div className={style.line}>
-                <CharacterCardComponent {...cardLine}>
+                <CardComponent {...cardLine}>
                     <div className={style.buttons}>
                         <Button onClick={onAdd}>Add item</Button>
                         <Button onClick={onRemoveCharacter}>Remove character</Button>
                     </div>
-                </CharacterCardComponent>
+                </CardComponent>
                 <ReactSortable className={style.cards} list={cardLine.cards} setList={(cards) => {
                     store.setCardLineCards(cardLine.cardLineId, cards);
                 }} >

@@ -7,7 +7,6 @@ import { Button } from 'antd';
 import { CharacterFilter } from './components/CharacterFilter/CharacterFilter';
 import { filterCharacterCards, filterItemCards } from './filterCards';
 import { ItemFilter } from './components/ItemFilter/ItemFilter';
-import { CharacterCardComponent } from '../CharacterCardComponent/CharacterCardComponent';
 
 type Props = {
     store: CardsStore;
@@ -64,7 +63,7 @@ export const Add = observer<Props>(({store}) => {
         <div className={style.cards}>
             {cards.map((card) => 
             <button key={card.id} className={style.card} onClick={() => addCard(card)}>
-                {cardLineId || cardLineItemId  ? <CardComponent {...card as ItemCard} /> : <CharacterCardComponent {...card as CharacterCard} />}
+                <CardComponent {...card} />
             </button>)}
         </div>
     </div>
