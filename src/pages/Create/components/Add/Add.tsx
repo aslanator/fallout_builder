@@ -3,7 +3,6 @@ import { Card, CardsStore, CharacterCard, ItemCard } from '../../store';
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './Add.module.css';
 import { toast } from 'react-toastify';
-import { Button } from 'antd';
 import { CharacterFilter } from './components/CharacterFilter/CharacterFilter';
 import { filterCharacterCards, filterItemCards } from './filterCards';
 import { ItemFilter } from './components/ItemFilter/ItemFilter';
@@ -16,10 +15,10 @@ export const Add = observer<Props>(({store}) => {
     const cardLineId = store.addMenuOptions.cardLineId;
     const cardLineItemId = store.addMenuOptions.cardLineItemId;
     const cards = cardLineId || cardLineItemId ? filterItemCards(store.cards, store.itemFilter) : filterCharacterCards(store.characterCards, store.characterFilter);
-    const filter = cardLineId || cardLineItemId ? <ItemFilter store={store}/> : <CharacterFilter store={store} />
     const onClose = () => {
         store.setMenuOpen(false, {});
     }
+    const filter = cardLineId || cardLineItemId ? <ItemFilter onClose={onClose} store={store}/> : <CharacterFilter onClose={onClose} store={store} />
     const addCard = (card: Card) => {
         if(cardLineItemId && cardLineId) {
             const addingCard = store.cards.filter(({title}) => card.title === title);
@@ -58,7 +57,6 @@ export const Add = observer<Props>(({store}) => {
     };
     return (
     <div className={style.container}>
-        <Button onClick={onClose}>Close</Button>
         {filter}
         <div className={style.cards}>
             {cards.map((card) => 

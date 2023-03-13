@@ -17,7 +17,7 @@ export const TitleFilter= observer<Props>(({value, onChange}) => {
 
     return <div className={style.container}>
         <div className={style.field}>
-            <div>search</div> <Input value={value} onChange={onTitleChange}/>
+            <div>Search</div> <Input value={value} onChange={onTitleChange}/>
         </div>
     </div>
 });

@@ -15,12 +15,13 @@
     padding: 5px;
 }
 
-.oddLine {
+/* .oddLine {
     background-color: #f1edb7;
-}
+} */
 
 .evenLine {
-    background-color: #e9e28c;
+    /* background-color: #e9e28c; */
+    background-color: #f1edb7;
 }
 
 .cards {

@@ -1,7 +1,10 @@
-.container {
+.controllers {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+    background-color: #0066b2a6;
     align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
+    color: yellow;
+    padding: 10px;
+    border-bottom: solid yellow 3px;
+    width: 100%;
 }

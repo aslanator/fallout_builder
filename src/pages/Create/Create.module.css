@@ -21,6 +21,7 @@
     align-items: center;
     color: yellow;
     padding: 10px;
+    border-bottom: solid yellow 3px;
 }
 
 .saveBlock {
