@@ -5,7 +5,6 @@ import classnames from 'classnames/bind';
 import { Button } from 'antd';
 
 type Props = Card & {
-    children?: React.ReactNode;
     type?: string,
     faction?: string,
     buttons?: Array<any>,
@@ -14,20 +13,22 @@ type Props = Card & {
 const classNames = classnames.bind(style);
 
 export const CardComponent: React.FC<Props> = (itemCard) => {
-    const { image, title, price, children, type = '', buttons } = itemCard;
+    const { image, title, price, type = '', buttons } = itemCard;
     const stretch = getCardStretch(type);
     const isVertical = stretch === 'VERTICAL' || itemCard.faction;
+
 
     return <div className={classNames({'container': true, 'verticalContainer': isVertical})}>
         <div className={classNames({'image': true, 'verticalImage': isVertical})}>
             <Img src={image} title={title}/>
         </div>
-        <div className={style.price}>{price}</div>
-        {children}
-        <div className={style.buttons}>
-            {buttons && (buttons.map(el => (
-                    <Button onClick={el.function}>{el.title}</Button>
-            )))}
+        <div className={style.infoBlock}>
+            <div className={style.price}>{price} points</div>
+            <div className={style.buttons}>
+                {buttons && (buttons.filter(Boolean).map(el => (
+                    <Button className={classNames({'button': true, 'deleteButton': el.isDelete})} onClick={el.function}>{el.title}</Button>
+                )))}
+            </div>
         </div>
     </div>
 }

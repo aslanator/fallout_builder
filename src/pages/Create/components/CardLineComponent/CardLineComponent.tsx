@@ -1,18 +1,21 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, InputNumber } from 'antd';
+import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
-import { ChangeEvent } from 'react';
 import { ReactSortable } from 'react-sortablejs';
 import { CardsStore, CardLine, Card, ItemCardOnLine, cardCanBeModded, getCardStretch, calculateCardLineSum, ItemCard } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './CardLineComponent.module.css';
+import classnames from 'classnames/bind'; 
 
 type Props = {
     cardLine: CardLine;
     store: CardsStore;
+    lineIndex: number;
 }
 
-export const CardLineComponent = observer<Props>(({store, cardLine}) => {
+const classNames = classnames.bind(style);
+
+export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) => {
     const onAdd = () => {
         store.setMenuOpen(true, {cardLineId: cardLine.cardLineId});
     }
@@ -38,33 +41,41 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
         store.setCardLineMultiplier(cardLine.cardLineId, Math.max(1, cardLine.multiplier - 1))
     }
 
-    return <div className={style.container}>
-        <div className={style.cardsContainer}>
-            <div className={style.line}>
+    return <div className={classNames({
+                'container': true, 
+                'evenLine': lineIndex % 2, 
+                'oddLine': !(lineIndex % 2),
+            })}>
+        <div className={classNames({'cardsContainer': true})}>
+            <div className={classNames({'line': true})}>
                 <CardComponent
                     buttons={[
-                        {title: 'Add item', function: onAdd}, 
-                        {title: 'Remove character', function: onRemoveCharacter
-                    }]} 
+                        {title: 'Add item', function: onAdd},
+                        // {title: 'Duplicate'},
+                        {title: 'Delete', function: onRemoveCharacter, isDelete: true},
+                    ]} 
                     {...cardLine as Card}
                 />
                 <ReactSortable className={style.cards} list={cardLine.cards} setList={(cards) => {
                     store.setCardLineCards(cardLine.cardLineId, cards);
                 }} >
                         {cardLine.cards.map((card, index) => (
-                            <div className={`${getCardStretch(card.type) === 'VERTICAL' && card.mod ? style.verticalCardWithMode : style.card}`} key={`${card.id}${card.mod?.id}`}>
-                                <CardComponent 
+                            <div 
+                                className={classNames({'card': true, 'verticalCardWithMode': getCardStretch(card.type) === 'VERTICAL' && card.mod})}
+                                key={`${card.id}${card.mod?.id}`}
+                            >
+                                <CardComponent
                                     buttons={[
                                         cardCanBeModded(card) && {title: card.mod ? 'Change mode' : 'Add mode', function: () => onAddMode(card)}, 
-                                        {title: 'Remove item', function: () => onRemoveItem(card)
-                                    }]} 
+                                        {title: 'Delete', function: () => onRemoveItem(card), isDelete: true}
+                                    ]} 
                                     key={`${index}${card.id}`} 
                                     {...card as Card}
                                 />
                                 {card.mod && (
                                     <CardComponent
                                         buttons={[
-                                            {title: 'Remove mod', function: () => onRemoveMod(card)},
+                                            {title: 'Delete', function: () => onRemoveMod(card), isDelete: true},
                                         ]}
                                         key={`${index}${card.mod.id}`}
                                         {...card.mod as Card}
@@ -76,7 +87,7 @@ export const CardLineComponent = observer<Props>(({store, cardLine}) => {
             </div>
         </div>
         <div className={style.summary}>
-            total: {sum} {cardLine.multiplier > 1 && <span>({sum / cardLine.multiplier})</span>}
+            Total: {sum} {cardLine.multiplier > 1 && <span>({sum / cardLine.multiplier})</span>}
             <div><Button disabled={cardLine.multiplier < 2} onClick={onMinusCardMultiplier}><MinusOutlined /></Button> x: {cardLine.multiplier} <Button onClick={onPlusCardMultiplier}><PlusOutlined /></Button></div>
         </div>
     </div>

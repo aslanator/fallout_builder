@@ -33,6 +33,9 @@
     color: #0066b2;
     border-radius: 4px;
     font-weight: 600;
+    box-shadow: 1px 1px 1px #858585;
+    border-color: transparent;
+    border-radius: 0px;
 }
 
 .save {

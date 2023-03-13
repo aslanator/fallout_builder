@@ -1,17 +1,14 @@
 .image {
-    width: 200px;
+    width: 255px;
     flex-grow: 0;
     overflow: hidden;
     border-radius: 5px;
-    height: 135px;
+    height: 157px;
 }
 
 .verticalImage {
-    width: 170px;
-    flex-grow: 0;
-    overflow: hidden;
-    border-radius: 5px;
-    height: 250px;
+    width: 235px;
+    height: 340px;
 }
 
 .image img {
@@ -19,39 +16,54 @@
 }
 
 .container {
-    height: 100%;
     display: flex;
-    flex-direction: column;
     gap: 5px;
     padding: 0 0 5px 0;
-    background: rgb(65 116 161);
-    color: white;
     overflow: hidden;
     border-radius: 10px;
     font-size: 15px;
     font-weight: bold;
-    align-items: center;
+    padding: 5px;
+    box-sizing: border-box;
+    align-items: flex-start;
+    height: 100%;
+    font-weight: 600;
+}
+
+.verticalContainer {
     padding: 5px;
     box-sizing: border-box;
 }
 
-.verticalContainer {
+.buttons {
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.button {
+    background-color: green;
+    border-radius: 0px;
+    font-weight: 600;
+    box-shadow: 1px 1px 1px #858585;
+    border-color: transparent;
+    color: white;
+}
+
+.deleteButton {
+    background-color: red;
+}
+
+.infoBlock {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding: 0 0 5px 0;
-    background: rgb(65 116 161);
-    color: white;
-    overflow: hidden;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: bold;
-    align-items: center;
-    padding: 5px;
-    box-sizing: border-box;
 }
 
 .title {
     font-size: 15px;
     font-weight: 700;
+}
+
+.price {
+    margin-bottom: 20px;
 }

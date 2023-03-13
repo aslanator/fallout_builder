@@ -58,26 +58,20 @@ export const Create = observer<Props>(({appStore}) => {
                 {sum} points
             </div>
             <div className={style.saveBlock}>
-                <Button onClick={onSaveAsPng}>Save as png</Button>
-                <Button onClick={onSaveAsTxt}>Save as txt</Button>
+                <Button className={style.addCharacterButton} disabled={!store.cardLines.length} onClick={onSaveAsPng}>Save as png</Button>
+                <Button style={{marginLeft: 5}} className={style.addCharacterButton} disabled={!store.cardLines.length} onClick={onSaveAsTxt}>Save as txt</Button>
             </div>
         </div>
         <div className={style.characters}>
             <ReactSortable list={store.cardLines} setList={store.setCardLines}>
-                {store.cardLines.map(cardLine => <CardLineComponent key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
+                {store.cardLines.map((cardLine, index) => <CardLineComponent lineIndex={index} key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
             </ReactSortable>
         </div>
         {store.addMenuOpen &&
-        <div className={style.add}>
-            <Add store={store} />
-        </div>}
-        { store.cardLines.length > 0 && (
-            <div className={style.save}>
-                {/* <Button onClick={onSaveAsJson}>Save as json</Button> */}
-                <Button onClick={onSaveAsPng}>Save as png</Button>
-                <Button onClick={onSaveAsTxt}>Save as txt</Button>
+            <div className={style.add}>
+                <Add store={store} />
             </div>
-        )}
+        }
         <div className={style.forImage} ref={forImageRef}>
             <BlockForImage cardLines={store.cardLines} sum={sum} />
         </div>

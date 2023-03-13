@@ -11,9 +11,16 @@
 .line {
     display: flex;
     gap: 10px;
-    background: rgb(232, 232, 232);
     width: max-content;
     padding: 5px;
+}
+
+.oddLine {
+    background-color: #f1edb7;
+}
+
+.evenLine {
+    background-color: #e9e28c;
 }
 
 .cards {
@@ -30,11 +37,6 @@
     align-items: center;
 }
 
-.buttons {
-    display: flex;
-    gap: 5px;
-}
-
 .card {
     display: flex;
     flex-direction: column;
@@ -42,7 +44,7 @@
 }
 
 .verticalCardWithMode {
-    display: flex;
+    flex-direction: row;
 }
 
 .verticalCardWithMode>div:nth-child(1) {
@@ -52,4 +54,9 @@
 
 .verticalCardWithMode>div:nth-child(2) {
     border-top-left-radius: 0;
-    border-bottom-left-radius: 0;}
+    border-bottom-left-radius: 0;
+}
+
+.summary {
+    font-weight: 600;
+}
