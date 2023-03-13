@@ -50,27 +50,28 @@ export const Create = observer<Props>(({appStore}) => {
         await saveAsJson(store.cardLines);
     }
     
-    return (<div className={style.container}>
+    return (
+    <div className={style.container}>
+        <div className={style.controllers}>
+            <Button className={style.addCharacterButton} type="primary" onClick={onAddCharacter}>Add character</Button>
+            <div>
+                {sum} points
+            </div>
+            <div className={style.saveBlock}>
+                <Button className={style.addCharacterButton} disabled={!store.cardLines.length} onClick={onSaveAsPng}>Save as png</Button>
+                <Button style={{marginLeft: 5}} className={style.addCharacterButton} disabled={!store.cardLines.length} onClick={onSaveAsTxt}>Save as txt</Button>
+            </div>
+        </div>
         <div className={style.characters}>
             <ReactSortable list={store.cardLines} setList={store.setCardLines}>
-                {store.cardLines.map(cardLine => <CardLineComponent key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
+                {store.cardLines.map((cardLine, index) => <CardLineComponent lineIndex={index} key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
             </ReactSortable>
         </div>
-        <Button className={style.addCharacter} type="primary" onClick={onAddCharacter}>Add character</Button>
-        {store.addMenuOpen && 
-        <div className={style.add}>
-            <Add store={store} />
-        </div>}
-        <div>
-        total: {sum}
-        </div>
-        { store.cardLines.length > 0 && (
-            <div className={style.save}>
-                {/* <Button onClick={onSaveAsJson}>Save as json</Button> */}
-                <Button onClick={onSaveAsPng}>Save as png</Button>
-                <Button onClick={onSaveAsTxt}>Save as txt</Button>
+        {store.addMenuOpen &&
+            <div className={style.add}>
+                <Add store={store} />
             </div>
-        )}
+        }
         <div className={style.forImage} ref={forImageRef}>
             <BlockForImage cardLines={store.cardLines} sum={sum} />
         </div>

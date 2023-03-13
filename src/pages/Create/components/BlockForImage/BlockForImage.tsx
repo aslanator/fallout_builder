@@ -21,12 +21,12 @@ export const BlockForImage: React.FC<Props> = observer(({cardLines, sum}) => {
                     <div className={style.cards}>
                         {cardLine.cards.map((card) => 
                             (<React.Fragment key={`${card.id}${card.mod?.id}`}>
-                                <div className={`${style.card} ${getCardStretch(card) === 'HORIZONTAL' ? style.cardHorizontal : style.cardVertical}`}>
+                                <div className={`${style.card} ${getCardStretch(card.type) === 'HORIZONTAL' ? style.cardHorizontal : style.cardVertical}`}>
                                     <img src={card.image} alt="card"  />
                                     <div className={style.price}>{card.price}</div>
                                 </div>
                                 {card.mod && (
-                                    <div className={`${style.card} ${getCardStretch(card.mod) === 'HORIZONTAL' ? style.cardHorizontal : style.cardVertical}`} >
+                                    <div className={`${style.card} ${getCardStretch(card.mod.type) === 'HORIZONTAL' ? style.cardHorizontal : style.cardVertical}`} >
                                         <img src={card.mod.image} alt="card"  />
                                         <div className={style.price}>{card.mod.price}</div>
                                     </div>

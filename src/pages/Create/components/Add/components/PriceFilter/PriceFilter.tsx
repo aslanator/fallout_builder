@@ -25,9 +25,17 @@ export const PriceFilter = observer<Props>(({store}) => {
     };
 
     return <div className={style.container}>
-        <div className={style.field}><div className={style.title}>min price</div> <Input maxLength={3} value={minPrice} onChange={onMinPriceChange} /></div>
-        -
-        <div className={style.field}><div className={style.title}>max price</div> <Input maxLength={3} value={maxPrice} onChange={onMaxPriceChange} /></div>
+        <div className={style.field}>
+            <div className={style.title}>Min price</div> 
+            <Input maxLength={3} value={minPrice} onChange={onMinPriceChange} />
+        </div>
+        <div>
+            -
+        </div>
+        <div className={style.field}>
+            <div className={style.title}>Max price</div> 
+            <Input maxLength={3} value={maxPrice} onChange={onMaxPriceChange} />
+        </div>
     </div>
 });
 
