@@ -7,13 +7,13 @@ import { Button } from 'antd';
 type Props = Card & {
     type?: string,
     faction?: string,
-    buttons?: Array<any>,
+    children?: React.ReactNode;
 }
 
 const classNames = classnames.bind(style);
 
 export const CardComponent: React.FC<Props> = (itemCard) => {
-    const { image, title, price, type = '', buttons } = itemCard;
+    const { image, title, price, type = '', children } = itemCard;
     const stretch = getCardStretch(type);
     const isVertical = stretch === 'VERTICAL' || itemCard.faction;
 
@@ -25,9 +25,7 @@ export const CardComponent: React.FC<Props> = (itemCard) => {
         <div className={style.infoBlock}>
             <div className={style.price}>{price} points</div>
             <div className={style.buttons}>
-                {buttons && (buttons.filter(Boolean).map(el => (
-                    <Button className={classNames({'button': true, 'deleteButton': el.isDelete})} onClick={el.function}>{el.title}</Button>
-                )))}
+                {children}
             </div>
         </div>
     </div>

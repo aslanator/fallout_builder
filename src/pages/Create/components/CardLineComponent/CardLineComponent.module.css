@@ -1,6 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
+    width: 1024px;
 }
 
 .cardsContainer {
@@ -12,23 +13,77 @@
     display: flex;
     gap: 10px;
     width: max-content;
-    padding: 5px;
+    flex-wrap: wrap;
 }
 
-/* .oddLine {
-    background-color: #f1edb7;
-} */
+@media only screen and (max-width: 1024px) {
+    .line {
+        width: 100vw;
+    }
+    .line > * {
+        width: 100vw !important;
+    }
+}
+
+.oddLine {
+    background-color: rgba(232, 229, 203, 0.85);
+}
 
 .evenLine {
-    /* background-color: #e9e28c; */
-    background-color: #f1edb7;
+    background-color: rgba(223, 214, 179, 0.2);
 }
 
-.cards {
+.equipments {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
     border-radius: 5px;
     width: max-content;
+    font-weight: 600;
+}
+
+.equipment {
+    padding: 5px;
+    display: flex;    
+    flex-direction: column;
+}
+
+.equipmentItem {
+    display: flex;
+    align-items: center;
+}
+
+.equipmentMod {
+    margin-top: 10px;
+}
+
+.equipmentTitle {
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.equipmentIcon {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.equipmentText {
+    width: 100%;
+}
+
+.button {
+    background-color: green;
+    border-radius: 0px;
+    font-weight: 600;
+    box-shadow: 1px 1px 1px #858585;
+    border-color: transparent;
+    color: white;
+    margin-left: 10px;
+}
+
+.deleteButton {
+    background-color: red;
 }
 
 .add {
@@ -60,4 +115,8 @@
 
 .summary {
     font-weight: 600;
+}
+
+.hidden {
+    display: none;
 }

@@ -63,9 +63,7 @@ export const Create = observer<Props>(({appStore}) => {
             </div>
         </div>
         <div className={style.characters}>
-            <ReactSortable list={store.cardLines} setList={store.setCardLines}>
-                {store.cardLines.map((cardLine, index) => <CardLineComponent lineIndex={index} key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
-            </ReactSortable>
+            {store.cardLines.map((cardLine, index) => <CardLineComponent lineIndex={index} key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
         </div>
         {store.addMenuOpen &&
             <div className={style.add}>

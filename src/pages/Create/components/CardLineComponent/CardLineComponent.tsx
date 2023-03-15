@@ -1,8 +1,7 @@
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { MinusOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
-import { ReactSortable } from 'react-sortablejs';
-import { CardsStore, CardLine, Card, ItemCardOnLine, cardCanBeModded, getCardStretch, calculateCardLineSum, ItemCard } from "../../store"
+import { CardsStore, CardLine, Card, ItemCardOnLine, calculateCardLineSum } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './CardLineComponent.module.css';
 import classnames from 'classnames/bind'; 
@@ -42,53 +41,90 @@ export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) 
     }
 
     return <div className={classNames({
-                'container': true, 
-                'evenLine': lineIndex % 2, 
-                'oddLine': !(lineIndex % 2),
+                'container': true,
             })}>
         <div className={classNames({'cardsContainer': true})}>
             <div className={classNames({'line': true})}>
                 <CardComponent
-                    buttons={[
-                        {title: 'Add item', function: onAdd},
-                        // {title: 'Duplicate'},
-                        {title: 'Delete', function: onRemoveCharacter, isDelete: true},
-                    ]} 
                     {...cardLine as Card}
-                />
-                <ReactSortable className={style.cards} list={cardLine.cards} setList={(cards) => {
-                    store.setCardLineCards(cardLine.cardLineId, cards);
-                }} >
-                        {cardLine.cards.map((card, index) => (
-                            <div 
-                                className={classNames({'card': true, 'verticalCardWithMode': getCardStretch(card.type) === 'VERTICAL' && card.mod})}
-                                key={`${card.id}${card.mod?.id}`}
-                            >
+                >
+                    <Button className={classNames({'button': true})} onClick={onAdd}>{'Add item'}</Button>
+                    <Button className={classNames({'button': true, 'deleteButton': true})} onClick={onRemoveCharacter}>{'Delete'}</Button>
+                    <div className={style.summary}>
+                        Total: {sum} {cardLine.multiplier > 1 && <span>({sum / cardLine.multiplier})</span>}
+                        <div><Button disabled={cardLine.multiplier < 2} onClick={onMinusCardMultiplier}><MinusOutlined /></Button> x: {cardLine.multiplier} <Button onClick={onPlusCardMultiplier}><PlusOutlined /></Button></div>
+                    </div>
+                </CardComponent>
+                <div 
+                    className={classNames({'equipments': true, 'hidden': !cardLine.cards.length})}
+                >
+                    <div className={classNames({'oddLine': lineIndex % 2, 'evenLine': !(lineIndex % 2), 'equipmentTitle': true})}>
+                        EQUIPMENT
+                    </div>
+                    {cardLine.cards.map((card, index) => {
+                        return (
+                                <div className={classNames({
+                                    'equipment': true,
+                                    'evenLine': (index + lineIndex % 2) % 2, 
+                                    'oddLine': !((index + lineIndex % 2) % 2),
+                                })}>
+                                    <div className={classNames({'equipmentItem': true})}>
+                                        <div className={classNames({
+                                            'equipmentIcon': true,
+                                        })}>
+                                            <EyeOutlined style = {{ fontSize:'30px' }} />
+                                        </div>
+                                        <div className={classNames({
+                                            'equipmentText': true,
+                                        })}>
+                                            {card.title}
+                                        </div>
+                                        <Button className={classNames({'button': true})} onClick={() => onAddMode(card)}>{card.mod ? 'Change mode' : 'Add mode'}</Button>
+                                        <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveItem(card)}>{'Delete'}</Button>
+                                    </div>
+                                    {card.mod && (
+                                        <div className={classNames({'equipmentItem': true, 'equipmentMod': true})}>
+                                            <div className={classNames({
+                                                'equipmentIcon': true,
+                                            })}>
+                                                <EyeOutlined style = {{ fontSize:'30px' }} />
+                                            </div>
+                                            <div className={classNames({
+                                                'equipmentText': true,
+                                            })}>
+                                                {card.mod.title}
+                                            </div>
+                                            <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveMod(card)}>{'Delete'}</Button>
+                                        </div>
+                                    )}
+                                </div>
+                    )})}
+                    {/* {cardLine.cards.map((card, index) => (
+                        <div 
+                            className={classNames({'card': true, 'verticalCardWithMode': getCardStretch(card.type) === 'VERTICAL' && card.mod})}
+                            key={`${card.id}${card.mod?.id}`}
+                        >
+                            <CardComponent
+                                buttons={[
+                                    cardCanBeModded(card) && {title: card.mod ? 'Change mode' : 'Add mode', function: () => onAddMode(card)}, 
+                                    {title: 'Delete', function: () => onRemoveItem(card), isDelete: true}
+                                ]} 
+                                key={`${index}${card.id}`} 
+                                {...card as Card}
+                            />
+                            {card.mod && (
                                 <CardComponent
                                     buttons={[
-                                        cardCanBeModded(card) && {title: card.mod ? 'Change mode' : 'Add mode', function: () => onAddMode(card)}, 
-                                        {title: 'Delete', function: () => onRemoveItem(card), isDelete: true}
-                                    ]} 
-                                    key={`${index}${card.id}`} 
-                                    {...card as Card}
+                                        {title: 'Delete', function: () => onRemoveMod(card), isDelete: true},
+                                    ]}
+                                    key={`${index}${card.mod.id}`}
+                                    {...card.mod as Card}
                                 />
-                                {card.mod && (
-                                    <CardComponent
-                                        buttons={[
-                                            {title: 'Delete', function: () => onRemoveMod(card), isDelete: true},
-                                        ]}
-                                        key={`${index}${card.mod.id}`}
-                                        {...card.mod as Card}
-                                    />
-                                )}
-                            </div>
-                        ))}
-                </ReactSortable>
+                            )}
+                        </div>
+                    ))} */}
+                </div>
             </div>
-        </div>
-        <div className={style.summary}>
-            Total: {sum} {cardLine.multiplier > 1 && <span>({sum / cardLine.multiplier})</span>}
-            <div><Button disabled={cardLine.multiplier < 2} onClick={onMinusCardMultiplier}><MinusOutlined /></Button> x: {cardLine.multiplier} <Button onClick={onPlusCardMultiplier}><PlusOutlined /></Button></div>
         </div>
     </div>
 });

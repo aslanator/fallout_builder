@@ -1,17 +1,7 @@
 .container {
-    /* padding: 5px; */
-    /* display: flex; */
     flex-direction: column;
     gap: 10px;
     align-items: center;
-    /* max-width: 1024px; */
-}
-
-.characters {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 .controllers {
@@ -22,6 +12,13 @@
     color: yellow;
     padding: 10px;
     border-bottom: solid yellow 3px;
+}
+
+.characters {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .saveBlock {
@@ -47,4 +44,18 @@
 .forImage {
     position: absolute;
     left: -20000px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .controllers {
+        position: fixed;
+        z-index: 1;
+        width: calc(100vw - 20px);
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .characters {
+        padding-top: 95px;
+        flex-direction: column;
+    }
 }
