@@ -8,9 +8,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 4;
 }
 
 .cards {
@@ -21,7 +20,7 @@
     width: 100%;
     overflow: auto;
     justify-content: center;
-    padding-bottom: 20px;
+    padding-top: 60px;
 }
 
 .card {

@@ -8,3 +8,10 @@
     border-bottom: solid yellow 3px;
     width: calc(100% - 20px);
 }
+
+@media only screen and (max-width: 1024px) {
+    .controllers {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+}

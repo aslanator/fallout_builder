@@ -9,7 +9,6 @@ import { BlockForImage } from "./components/BlockForImage/BlockForImage";
 import { CardLineComponent } from "./components/CardLineComponent/CardLineComponent";
 import style from './Create.module.css';
 import { calculateTotalSum, CardLine, CharacterCard, createCardsStore, ItemCard } from "./store";
-import { ReactSortable } from "react-sortablejs";
 
 type Props = {
     appStore: AppStore;

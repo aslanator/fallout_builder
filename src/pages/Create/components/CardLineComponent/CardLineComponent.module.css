@@ -4,6 +4,12 @@
     width: 1024px;
 }
 
+@media only screen and (max-width: 1024px) {
+    .container {
+        width: 100vw;
+    }
+}
+
 .cardsContainer {
     overflow-x: auto;
     overflow-y: hidden;
