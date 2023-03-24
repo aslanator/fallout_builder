@@ -1,7 +1,7 @@
 import { MinusOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
-import { CardsStore, CardLine, Card, ItemCardOnLine, calculateCardLineSum } from "../../store"
+import { CardsStore, CardLine, Card, ItemCardOnLine, calculateCardLineSum, ItemCard } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './CardLineComponent.module.css';
 import classnames from 'classnames/bind'; 
@@ -40,6 +40,10 @@ export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) 
         store.setCardLineMultiplier(cardLine.cardLineId, Math.max(1, cardLine.multiplier - 1))
     }
 
+    const onOpenCardModal = (card : ItemCard | undefined) => {
+        store.openCardModal(true, card);
+    }
+
     return <div className={classNames({
                 'container': true,
             })}>
@@ -63,66 +67,56 @@ export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) 
                     </div>
                     {cardLine.cards.map((card, index) => {
                         return (
-                                <div className={classNames({
-                                    'equipment': true,
-                                    'evenLine': (index + lineIndex % 2) % 2, 
-                                    'oddLine': !((index + lineIndex % 2) % 2),
-                                })}>
-                                    <div className={classNames({'equipmentItem': true})}>
-                                        <div className={classNames({
-                                            'equipmentIcon': true,
+                            <div key={card.id} className={classNames({
+                                'equipment': true,
+                                'evenLine': (index + lineIndex % 2) % 2, 
+                                'oddLine': !((index + lineIndex % 2) % 2),
+                            })}>
+                                <div className={classNames({'equipmentItem': true})}>
+                                    <div 
+                                        onClick={() => onOpenCardModal(card)} 
+                                        className={classNames({
+                                        'equipmentIcon': true,
+                                    })}>
+                                        <EyeOutlined style = {{ fontSize:'30px' }} />
+                                    </div>
+                                    <div className={classNames({
+                                        'equipmentText': true,
+                                    })}>
+                                        {card.title}
+                                    </div>
+                                    <Button className={classNames({'button': true})} onClick={() => onAddMode(card)}>{card.mod ? 'Change mode' : 'Add mode'}</Button>
+                                    <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveItem(card)}>{'Delete'}</Button>
+                                    <div className={classNames({
+                                        'equipmentText': true,
+                                    })}>
+                                        {card.price} points
+                                    </div>
+                                </div>
+                                {card.mod && (
+                                    <div className={classNames({'equipmentItem': true, 'equipmentMod': true})}>
+                                        <div
+                                            onClick={() => onOpenCardModal(card.mod)} 
+                                            className={classNames({
+                                                'equipmentIcon': true,
                                         })}>
                                             <EyeOutlined style = {{ fontSize:'30px' }} />
                                         </div>
                                         <div className={classNames({
                                             'equipmentText': true,
                                         })}>
-                                            {card.title}
+                                            {card.mod.title}
                                         </div>
-                                        <Button className={classNames({'button': true})} onClick={() => onAddMode(card)}>{card.mod ? 'Change mode' : 'Add mode'}</Button>
-                                        <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveItem(card)}>{'Delete'}</Button>
+                                        <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveMod(card)}>{'Delete'}</Button>
+                                        <div className={classNames({
+                                            'equipmentText': true,
+                                        })}>
+                                            {card.price} points
+                                        </div>
                                     </div>
-                                    {card.mod && (
-                                        <div className={classNames({'equipmentItem': true, 'equipmentMod': true})}>
-                                            <div className={classNames({
-                                                'equipmentIcon': true,
-                                            })}>
-                                                <EyeOutlined style = {{ fontSize:'30px' }} />
-                                            </div>
-                                            <div className={classNames({
-                                                'equipmentText': true,
-                                            })}>
-                                                {card.mod.title}
-                                            </div>
-                                            <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveMod(card)}>{'Delete'}</Button>
-                                        </div>
-                                    )}
-                                </div>
-                    )})}
-                    {/* {cardLine.cards.map((card, index) => (
-                        <div 
-                            className={classNames({'card': true, 'verticalCardWithMode': getCardStretch(card.type) === 'VERTICAL' && card.mod})}
-                            key={`${card.id}${card.mod?.id}`}
-                        >
-                            <CardComponent
-                                buttons={[
-                                    cardCanBeModded(card) && {title: card.mod ? 'Change mode' : 'Add mode', function: () => onAddMode(card)}, 
-                                    {title: 'Delete', function: () => onRemoveItem(card), isDelete: true}
-                                ]} 
-                                key={`${index}${card.id}`} 
-                                {...card as Card}
-                            />
-                            {card.mod && (
-                                <CardComponent
-                                    buttons={[
-                                        {title: 'Delete', function: () => onRemoveMod(card), isDelete: true},
-                                    ]}
-                                    key={`${index}${card.mod.id}`}
-                                    {...card.mod as Card}
-                                />
-                            )}
-                        </div>
-                    ))} */}
+                                )}
+                            </div>
+                        )})}
                 </div>
             </div>
         </div>

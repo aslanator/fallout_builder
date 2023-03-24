@@ -9,6 +9,7 @@ import { BlockForImage } from "./components/BlockForImage/BlockForImage";
 import { CardLineComponent } from "./components/CardLineComponent/CardLineComponent";
 import style from './Create.module.css';
 import { calculateTotalSum, CardLine, CharacterCard, createCardsStore, ItemCard } from "./store";
+import { CardModal } from "./components/CardModal";
 
 type Props = {
     appStore: AppStore;
@@ -67,6 +68,11 @@ export const Create = observer<Props>(({appStore}) => {
         {store.addMenuOpen &&
             <div className={style.add}>
                 <Add store={store} />
+            </div>
+        }
+        {store.cardModalIsOpen &&
+            <div onClick={store.closeCardModal} className={style.modal}>
+                <CardModal store={store}/>
             </div>
         }
         <div className={style.forImage} ref={forImageRef}>

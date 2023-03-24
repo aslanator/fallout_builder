@@ -55,6 +55,18 @@
     z-index: 2;
 }
 
+.modal {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    background: #000000cc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media only screen and (max-width: 1024px) {
     .controllers {
         flex-wrap: wrap;

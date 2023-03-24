@@ -58,6 +58,8 @@ export type CardsStore = {
     cardLines: CardLine[];
     characterFilter: FilterCharacter;
     itemFilter: FilterItem;
+    cardModalIsOpen: boolean;
+    cardModalCard: ItemCard;
     addMenuOpen: boolean;
     addMenuOptions: {
         cardLineId: number;
@@ -75,6 +77,8 @@ export type CardsStore = {
     addItemMod: (itemCard: ItemCard, cardLineId: number, cardLineItemId: number) => void;
     removeItemMod: (cardLineId: number, cardLineItemId: number) => void;
     setCardLineMultiplier: (cardLineId: number, multiplier: number) => void;
+    openCardModal: (open: boolean, card: ItemCard | undefined) => void;
+    closeCardModal: () => void;
 }
 
 type Args = {
@@ -120,6 +124,16 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         search: '',
     };
 
+    const cardModalCard: ItemCard | undefined = {
+        id: 0,
+        title: '',
+        price: 0,
+        image: '',
+        lowResImage: '',
+        type: 'Mod',
+        subType: 'Perk',
+    };
+
     const store = makeAutoObservable({
         cards,
         characterCards,
@@ -130,7 +144,9 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         addMenuOptions: {
             cardLineId: 0,
             cardLineItemId: 0
-        }
+        },
+        cardModalIsOpen: false,
+        cardModalCard,
     });
 
     return extendObservable(store, {
@@ -219,6 +235,16 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
             if(cardLine) {
                 cardLine.multiplier = multiplier;
             }
+        }, 
+        openCardModal(open: boolean, card: ItemCard | undefined) {
+            store.cardModalIsOpen = open;
+            if (card) {
+                store.cardModalCard = card;
+            }
+        },
+        closeCardModal() {
+            store.cardModalIsOpen = false;
+            store.cardModalCard = cardModalCard;
         }
     });
 }
