@@ -4,7 +4,8 @@ import { observer } from 'mobx-react-lite';
 import { CardsStore, CardLine, Card, ItemCardOnLine, calculateCardLineSum, ItemCard } from "../../store"
 import { CardComponent } from '../CardComponent/CardComponent';
 import style from './CardLineComponent.module.css';
-import classnames from 'classnames/bind'; 
+import classnames from 'classnames/bind';
+import { ReactSortable } from "react-sortablejs"; 
 
 type Props = {
     cardLine: CardLine;
@@ -65,41 +66,21 @@ export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) 
                     <div className={classNames({'oddLine': lineIndex % 2, 'evenLine': !(lineIndex % 2), 'title': true})}>
                         EQUIPMENT
                     </div>
-                    {cardLine.cards.map((card, index) => {
-                        return (
-                            <div key={card.id} className={classNames({
-                                'equipment': true,
-                                'evenLine': (index + lineIndex % 2) % 2, 
-                                'oddLine': !((index + lineIndex % 2) % 2),
-                            })}>
-                                <div className={classNames({'equipmentItem': true})}>
-                                    <div 
-                                        onClick={() => onOpenCardModal(card)} 
-                                        className={classNames({
-                                        'equipmentIcon': true,
-                                    })}>
-                                        <EyeOutlined style = {{ fontSize:'30px' }} />
-                                    </div>
-                                    <div className={classNames({
-                                        'equipmentText': true,
-                                        'equipmentTitle': true,
-                                    })}>
-                                        {card.title}
-                                    </div>
-                                    <Button className={classNames({'button': true})} onClick={() => onAddMode(card)}>{card.mod ? 'Change mode' : 'Add mode'}</Button>
-                                    <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveItem(card)}>{'Delete'}</Button>
-                                    <div className={classNames({
-                                        'equipmentText': true,
-                                    })}>
-                                        {card.price} points
-                                    </div>
-                                </div>
-                                {card.mod && (
-                                    <div className={classNames({'equipmentItem': true, 'equipmentMod': true})}>
-                                        <div
-                                            onClick={() => onOpenCardModal(card.mod)} 
+                    <ReactSortable className={style.cards} list={cardLine.cards} setList={(cards) => {
+                        store.setCardLineCards(cardLine.cardLineId, cards);
+                    }}>
+                        {cardLine.cards.map((card, index) => {
+                            return (
+                                <div key={card.id} className={classNames({
+                                    'equipment': true,
+                                    'evenLine': (index + lineIndex % 2) % 2, 
+                                    'oddLine': !((index + lineIndex % 2) % 2),
+                                })}>
+                                    <div className={classNames({'equipmentItem': true})}>
+                                        <div 
+                                            onClick={() => onOpenCardModal(card)} 
                                             className={classNames({
-                                                'equipmentIcon': true,
+                                            'equipmentIcon': true,
                                         })}>
                                             <EyeOutlined style = {{ fontSize:'30px' }} />
                                         </div>
@@ -107,18 +88,42 @@ export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) 
                                             'equipmentText': true,
                                             'equipmentTitle': true,
                                         })}>
-                                            {card.mod.title}
+                                            {card.title}
                                         </div>
-                                        <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveMod(card)}>{'Delete'}</Button>
+                                        <Button className={classNames({'button': true})} onClick={() => onAddMode(card)}>{card.mod ? 'Change mode' : 'Add mode'}</Button>
+                                        <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveItem(card)}>{'Delete'}</Button>
                                         <div className={classNames({
                                             'equipmentText': true,
                                         })}>
                                             {card.price} points
                                         </div>
                                     </div>
-                                )}
-                            </div>
-                        )})}
+                                    {card.mod && (
+                                        <div className={classNames({'equipmentItem': true, 'equipmentMod': true})}>
+                                            <div
+                                                onClick={() => onOpenCardModal(card.mod)} 
+                                                className={classNames({
+                                                    'equipmentIcon': true,
+                                            })}>
+                                                <EyeOutlined style = {{ fontSize:'30px' }} />
+                                            </div>
+                                            <div className={classNames({
+                                                'equipmentText': true,
+                                                'equipmentTitle': true,
+                                            })}>
+                                                {card.mod.title}
+                                            </div>
+                                            <Button className={classNames({'button': true, 'deleteButton': true})} onClick={() => onRemoveMod(card)}>{'Delete'}</Button>
+                                            <div className={classNames({
+                                                'equipmentText': true,
+                                            })}>
+                                                {card.price} points
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )})}
+                        </ReactSortable>
                 </div>
             </div>
         </div>

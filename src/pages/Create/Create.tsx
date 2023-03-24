@@ -10,6 +10,8 @@ import { CardLineComponent } from "./components/CardLineComponent/CardLineCompon
 import style from './Create.module.css';
 import { calculateTotalSum, CardLine, CharacterCard, createCardsStore, ItemCard } from "./store";
 import { CardModal } from "./components/CardModal";
+import { ReactSortable } from "react-sortablejs";
+
 
 type Props = {
     appStore: AppStore;
@@ -63,7 +65,9 @@ export const Create = observer<Props>(({appStore}) => {
             </div>
         </div>
         <div className={style.characters}>
-            {store.cardLines.map((cardLine, index) => <CardLineComponent lineIndex={index} key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
+            <ReactSortable list={store.cardLines} setList={store.setCardLines}>
+                {store.cardLines.map((cardLine, index) => <CardLineComponent lineIndex={index} key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
+            </ReactSortable>
         </div>
         {store.addMenuOpen &&
             <div className={style.add}>
