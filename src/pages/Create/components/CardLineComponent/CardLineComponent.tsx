@@ -62,7 +62,7 @@ export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) 
                 <div 
                     className={classNames({'equipments': true, 'hidden': !cardLine.cards.length})}
                 >
-                    <div className={classNames({'oddLine': lineIndex % 2, 'evenLine': !(lineIndex % 2), 'equipmentTitle': true})}>
+                    <div className={classNames({'oddLine': lineIndex % 2, 'evenLine': !(lineIndex % 2), 'title': true})}>
                         EQUIPMENT
                     </div>
                     {cardLine.cards.map((card, index) => {
@@ -82,6 +82,7 @@ export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) 
                                     </div>
                                     <div className={classNames({
                                         'equipmentText': true,
+                                        'equipmentTitle': true,
                                     })}>
                                         {card.title}
                                     </div>
@@ -104,6 +105,7 @@ export const CardLineComponent = observer<Props>(({store, cardLine, lineIndex}) 
                                         </div>
                                         <div className={classNames({
                                             'equipmentText': true,
+                                            'equipmentTitle': true,
                                         })}>
                                             {card.mod.title}
                                         </div>

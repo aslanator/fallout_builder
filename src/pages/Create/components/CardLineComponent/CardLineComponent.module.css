@@ -62,7 +62,7 @@
     margin-top: 10px;
 }
 
-.equipmentTitle {
+.title {
     padding: 12px;
     display: flex;
     justify-content: center;
@@ -76,6 +76,10 @@
 
 .equipmentText {
     margin-left: 10px;
+}
+
+.equipmentTitle {
+    flex: 1;
 }
 
 .button {
