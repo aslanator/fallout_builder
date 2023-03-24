@@ -8,7 +8,7 @@ export const Start = () => {
         {/* <Link to={'/export'} className={style.link}><Button>Export json</Button></Link> */}
 
         <div className={style.footer}>
-            Special thanks to <a href="https://vk.com/tgmleo" target="_blank" rel="noreferrer">Leonid Lupanov</a>
+            Special thanks to <a href="https://vk.com/tgmleo" target="_blank" rel="noreferrer">Leonid Lupanov</a> and <a href="https://vk.com/id168809740" target="_blank" rel="noreferrer">Nikolay Puchinin</a>
         </div>
     </div>
 };
