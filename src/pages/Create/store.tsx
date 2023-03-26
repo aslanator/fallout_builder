@@ -124,7 +124,7 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         search: '',
     };
 
-    const cardModalCard: ItemCard | undefined = {
+    const cardModalCard: ItemCard = {
         id: 0,
         title: '',
         price: 0,

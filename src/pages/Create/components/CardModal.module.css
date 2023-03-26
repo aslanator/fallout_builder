@@ -1,6 +1,4 @@
 .image {
-    /* width: 255px;
-    height: 157px; */
     width: 500px;
     height: 307px;
     flex-grow: 0;
@@ -9,8 +7,6 @@
 }
 
 .verticalImage {
-    /* width: 235px;
-    height: 340px; */
     width: 346px;
     height: 500px;
 }

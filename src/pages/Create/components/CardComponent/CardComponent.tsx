@@ -1,8 +1,7 @@
 import { Img } from '../../../../features/components/Img/Img';
 import { getCardStretch, Card } from '../../store';
 import style from './CardComponent.module.css';
-import classnames from 'classnames/bind'; 
-import { Button } from 'antd';
+import classnames from 'classnames/bind';
 
 type Props = Card & {
     type?: string,
