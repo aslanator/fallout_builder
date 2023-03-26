@@ -124,7 +124,7 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         search: '',
     };
 
-    const cardModalCard: ItemCard = {
+    const DEFAULT_CARD_MODAL_CARD: ItemCard = {
         id: 0,
         title: '',
         price: 0,
@@ -146,7 +146,7 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
             cardLineItemId: 0
         },
         cardModalIsOpen: false,
-        cardModalCard,
+        cardModalCard: DEFAULT_CARD_MODAL_CARD,
     });
 
     return extendObservable(store, {
@@ -244,7 +244,7 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
         },
         closeCardModal() {
             store.cardModalIsOpen = false;
-            store.cardModalCard = cardModalCard;
+            store.cardModalCard = DEFAULT_CARD_MODAL_CARD;
         }
     });
 }
