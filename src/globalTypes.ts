@@ -13,7 +13,7 @@ export const factionKeyToLabelMap = {
     'robots': 'Robots',
     'creatures': 'Creatures',
     'ncr': 'NCR',
-    'rider': 'Riders',
+    'raider': 'Raiders',
     'caesar': 'Caesar Legion',
     'robobrain': 'Robobrain',
     'atomchild': 'Children\'s of atom',
