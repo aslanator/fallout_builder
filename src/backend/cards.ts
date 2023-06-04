@@ -18,6 +18,7 @@ type RawItemCard = {
     lowResImage: string;
     type: ItemType;
     subType: ItemSubType;
+    stretch?: 'HORIZONTAL' | 'VERTICAL';
 }
 
 export const getCards = async (): Promise<ItemCard[]> => {

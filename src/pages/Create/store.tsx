@@ -13,6 +13,7 @@ export type Card = {
 export type ItemCard = Card & {
     type: ItemType;
     subType: ItemSubType;
+    stretch?: 'HORIZONTAL' | 'VERTICAL';
 }
 
 
@@ -86,6 +87,9 @@ type Args = {
 type Stretch = 'VERTICAL' | 'HORIZONTAL';
 
 export const getCardStretch = (card: ItemCard): Stretch => {
+    if(card.stretch) {
+        return card.stretch;
+    }
     if(["Alcohol", "Chem", "Power Armor"].includes(card.type)){
         return 'VERTICAL';
     }
@@ -155,7 +159,7 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
                 }
                 const defaultItems = store.cardLines.find(cardLine => cardLine.cardLineId === cardLineId)?.availableItems || [];
             
-                store.itemFilter = {...store.itemFilter, subTypes: defaultItems, types: []};
+                store.itemFilter = {...store.itemFilter, subTypes: [...defaultItems, 'Leader Perk', 'Perk'], types: []};
 
             } else {
                 store.addMenuOptions = {

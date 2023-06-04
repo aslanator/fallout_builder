@@ -52,7 +52,7 @@ export const Create = observer<Props>(({appStore}) => {
     
     return (<div className={style.container}>
         <div className={style.characters}>
-            <ReactSortable list={store.cardLines} setList={store.setCardLines}>
+            <ReactSortable delay={500} delayOnTouchOnly={true} list={store.cardLines} setList={store.setCardLines} >
                 {store.cardLines.map(cardLine => <CardLineComponent key={cardLine.cardLineId} cardLine={cardLine} store={store} />)}
             </ReactSortable>
         </div>

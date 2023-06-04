@@ -1,6 +1,4 @@
-import { Img } from '../../../../features/components/Img/Img';
 import { getCardStretch, ItemCard } from '../../store';
-import style from './CardComponent.module.css';
 import { HorizontalItem } from './components/HorizontalItem/HorizontalItem';
 import { VerticalItem } from './components/VerticalItem/VerticalItem';
 
