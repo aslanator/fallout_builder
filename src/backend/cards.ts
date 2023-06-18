@@ -24,6 +24,7 @@ type RawItemCard = {
 export const getCards = async (): Promise<ItemCard[]> => {
     return new Promise((resolve, reject) => GSheetReader(options, (result: RawItemCard[]) => {
         resolve(result.map(item => {
-            return {...item, price: Number(item.price)};
+            const multiplierMatch = item.price.match(/^[x|х](\d\.\d+)$/);
+            return {...item, price: multiplierMatch ? 0 : Number(item.price), multiplier: multiplierMatch ? Number(multiplierMatch[1]) : 1};
         }));
     }, reject));}

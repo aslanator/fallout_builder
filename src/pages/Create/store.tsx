@@ -13,6 +13,7 @@ export type Card = {
 export type ItemCard = Card & {
     type: ItemType;
     subType: ItemSubType;
+    multiplier: number;
     stretch?: 'HORIZONTAL' | 'VERTICAL';
 }
 
@@ -101,7 +102,8 @@ export const cardCanBeModded = (card: ItemCard): boolean => {
 }
 
 export const calculateCardLineSum = (cardLine: CardLine) => {
-    return (cardLine.price + cardLine.cards.reduce((carry, item) => carry + item.price + (item.mod?.price || 0), 0)) * cardLine.multiplier;
+    const multiplier = 1 + cardLine.cards.reduce((carry, item) => carry + item.multiplier - 1, 0);
+    return Math.ceil((cardLine.price + cardLine.cards.reduce((carry, item) => carry + item.price + (item.mod?.price || 0), 0)) * multiplier * cardLine.multiplier);
 }
 
 export const calculateTotalSum = (cardLines: CardLine[]) => {

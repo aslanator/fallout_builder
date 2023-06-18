@@ -10,10 +10,10 @@ export const CardComponent: React.FC<Props> = (itemCard) => {
     const stretch = getCardStretch(itemCard);
 
     if(stretch === 'HORIZONTAL') {
-        return <HorizontalItem {...itemCard} />
+        return <HorizontalItem {...itemCard} price={itemCard.multiplier ? `x${itemCard.multiplier}` : itemCard.price} />
     }
     if(stretch === 'VERTICAL') {
-        return <VerticalItem {...itemCard} />
+        return <VerticalItem {...itemCard} price={itemCard.multiplier ? `x${itemCard.multiplier}` : itemCard.price} />
     }
     
     return null;
