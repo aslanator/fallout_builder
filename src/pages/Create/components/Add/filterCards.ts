@@ -1,7 +1,7 @@
 import { CharacterCard, FilterCharacter, FilterItem, ItemCard } from "../../store"
 
 export const filterCharacterCards = (cards: CharacterCard[], {priceMin, priceMax, search, factions}: FilterCharacter) => {
-    const searchRegexp = new RegExp(`${search.replace(/[^A-Za-z \-_*.0-9():;,]/, '').replace('.', '\\.').replace('*', '.*')}`, 'i');
+    const searchRegexp = new RegExp(`${search.replace(/[^A-Za-z \-_*.0-9():;,]/g, '').replace('.', '\\.').replace('*', '.*')}`, 'i');
     const filteredCards = cards.filter(card => {
         if(priceMin && card.price < priceMin) {
             return false;

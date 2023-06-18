@@ -161,7 +161,7 @@ export const createCardsStore = ({cards, characterCards, cardLines = []}: Args):
                 }
                 const defaultItems = store.cardLines.find(cardLine => cardLine.cardLineId === cardLineId)?.availableItems || [];
             
-                store.itemFilter = {...store.itemFilter, subTypes: [...defaultItems, 'Leader Perk', 'Perk'], types: []};
+                store.itemFilter = {...store.itemFilter, subTypes: [...defaultItems.filter(Boolean), 'Leader Perk', 'Perk'], types: []};
 
             } else {
                 store.addMenuOptions = {
